@@ -13,4 +13,8 @@
     <ProjectReference Include="..\eCommerceClassLibrary\eCommerceClassLibrary.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\images\" />
+  </ItemGroup>
+
 </Project>

@@ -67,6 +67,21 @@ namespace eCommerceClassLibrary
             return products;
         }
 
+        public List<Products> ViewAllProducts()
+        {
+            List<Products> products = null;
+            try
+            {
+                products = _context.Products
+                            .ToList();
+            }
+            catch (Exception ex)
+            {
+                products = null;
+            }
+            return products;
+        }
+
         public int ModifyProduct(Products newProduct)
         {
             int value = 0;
