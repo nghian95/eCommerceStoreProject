@@ -8,6 +8,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Http;
 
 namespace eCommerceMVC.Controllers
 {
@@ -42,6 +43,13 @@ namespace eCommerceMVC.Controllers
 
         public IActionResult Login()
         {
+            return View();
+        }
+
+        public IActionResult CheckRole(FormCollection frm)
+        {
+            string userName = frm["username"];
+            string password = frm["password"];
             return View();
         }
 

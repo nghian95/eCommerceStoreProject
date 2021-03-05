@@ -53,5 +53,16 @@ namespace eCommerceMVC.Controllers
             }
             return View(modelProducts);
         }
+
+
+        public IActionResult AddProduct()
+        {
+            return View();
+        }
+
+        public IActionResult SaveAddedProduct()
+        {
+            return View();
+        }
     }
 }

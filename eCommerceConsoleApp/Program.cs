@@ -12,7 +12,7 @@ namespace eCommerceConsoleApp
             eCommerceDBContext context = new eCommerceDBContext();
             eCommerceRepository repository = new eCommerceRepository(context);
             Products product = new Products();
-            product.SKU = "BLUEPOLO0001";
+            product.Sku = "BLUEPOLO0001";
             product.Name = "Blue Formal Polo Shirt";
             product.CategoryId = 1;
             //repository.ModifyProduct(product);

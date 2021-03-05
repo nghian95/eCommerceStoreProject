@@ -200,6 +200,27 @@ namespace eCommerceClassLibrary
             return value;
         }
 
+        //public int ValidateCredentials(string username, string password)
+        //{
+        //    int value = 0;
+        //    try
+        //    {
+        //        if (_context.Users.Find(username) &&)
+        //        {
+        //            value = 1;
+        //        }
+        //        else
+        //        {
+        //            value = -1;
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        value = -99;
+        //    }
+        //    return value;
+        //}
+
         //public int DummyMethod(string variable)
         //{
         //    int value = 0;
