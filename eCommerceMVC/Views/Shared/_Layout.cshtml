@@ -17,7 +17,12 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-                    <ul class="navbar-nav flex-grow-1">
+                    <ul class="nav navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Login">Login</a>
+                        </li>
+                    </ul>
+                    <ul class="nav navbar-nav mr-auto">
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="HomePage">Home</a>
                         </li>
@@ -28,7 +33,9 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Products">Products</a>
                         </li>
                     </ul>
+
                 </div>
+                
             </div>
         </nav>
     </header>

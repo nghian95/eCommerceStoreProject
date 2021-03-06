@@ -46,11 +46,18 @@ namespace eCommerceMVC.Controllers
             return View();
         }
 
-        public IActionResult CheckRole(FormCollection frm)
+        public IActionResult CheckRole(IFormCollection frm)
         {
             string userName = frm["username"];
             string password = frm["password"];
-            return View();
+            int value = _repository.ValidateCredentials(userName, password);
+            switch (value)
+            {
+                case 1: return RedirectToAction("HomePage", "Admin");
+                case -1: return RedirectToAction("Login");
+                case -99: return RedirectToAction("Login");
+                default: return RedirectToAction("Login");
+            }
         }
 
         public IActionResult Categories()

@@ -126,23 +126,64 @@ namespace eCommerceClassLibrary
             return value;
         } 
 
-        public int AddCategory(string categoryName)
+        //public int AddCategory(string categoryName)
+        //{
+        //    int value = 0;
+        //    try
+        //    {
+        //        Categories category = new Categories();
+        //        category.Name = categoryName;
+        //        _context.Add(category);
+        //        _context.SaveChanges();
+        //        if (_context.Categories.Find(category.CategoryId) != null)
+        //        {
+        //            value = 1;
+        //        } else
+        //        {
+        //            value = -1;
+        //        }
+        //    } catch (Exception ex)
+        //    {
+        //        value = -99;
+        //    }
+        //    return value;
+        //}
+
+        public int AddCategory(Categories category)
         {
             int value = 0;
             try
             {
-                Categories category = new Categories();
-                category.Name = categoryName;
-                _context.Add(category);
+                if (_context.Categories.Find(category.CategoryId) != null)
+                {
+                    return 2;
+                }
+                _context.Categories.Add(category);
                 _context.SaveChanges();
                 if (_context.Categories.Find(category.CategoryId) != null)
                 {
                     value = 1;
-                } else
+                }
+                else
                 {
                     value = -1;
                 }
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
+            {
+                value = -99;
+            }
+            return value;
+        }
+
+        public int GetNextCategoryId()
+        {
+            int value = 0;
+            try
+            {
+                value = _context.Categories.OrderByDescending(x => x.CategoryId).First().CategoryId + 1;
+            }
+            catch (Exception ex)
             {
                 value = -99;
             }
@@ -200,26 +241,27 @@ namespace eCommerceClassLibrary
             return value;
         }
 
-        //public int ValidateCredentials(string username, string password)
-        //{
-        //    int value = 0;
-        //    try
-        //    {
-        //        if (_context.Users.Find(username) &&)
-        //        {
-        //            value = 1;
-        //        }
-        //        else
-        //        {
-        //            value = -1;
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        value = -99;
-        //    }
-        //    return value;
-        //}
+        public int ValidateCredentials(string username, string password)
+        {
+            int value = 0;
+            try
+            {
+                Users user = _context.Users.Find(username);
+                if (user != null && user.Password.Equals(password))
+                {
+                    value = 1;
+                }
+                else
+                {
+                    value = -1;
+                }
+            }
+            catch (Exception ex)
+            {
+                value = -99;
+            }
+            return value;
+        }
 
         //public int DummyMethod(string variable)
         //{

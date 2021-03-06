@@ -1,11 +1,11 @@
 ﻿@{ 
     ViewData["Title"] = "Login";
 }
-<form>
-    <h1>Login:</h1>
-    <p>Username: </p>
-    @Html.TextBox("username")
-    <p>Password: </p>
-    @Html.Password("password")
-    <input type="submit" class="btn" value="Login" />
+<form asp-action="CheckRole">
+    <div class="container-fluid">
+        <h3>Login:</h3>
+        <p>Username: @Html.TextBox("username")</p>
+        <p>Password: &nbsp;  @Html.Password("password")</p>
+        <input type="submit" class="btn btn-primary" value="Submit" />
+    </div>
 </form>

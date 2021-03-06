@@ -54,6 +54,32 @@ namespace eCommerceMVC.Controllers
             return View(modelProducts);
         }
 
+        public IActionResult AddCategory()
+        {
+            ViewBag.NextCategoryId = _repository.GetNextCategoryId();
+            return View();
+        }
+        public IActionResult SaveAddedCategory(Models.Categories category)
+        {
+            eCommerceClassLibrary.Models.Categories entityCategory;
+            entityCategory = _mapper.Map<eCommerceClassLibrary.Models.Categories>(category);
+            int value = _repository.AddCategory(entityCategory);
+            switch (value)
+            {
+                case 1: return View("Success");
+                case 2:
+                case -1:
+                case -99: return View("Failed");
+                default: return View("AddCategory");
+            }
+            
+            
+        }
+
+        public IActionResult DeleteCategory()
+        {
+            return View();
+        }
 
         public IActionResult AddProduct()
         {

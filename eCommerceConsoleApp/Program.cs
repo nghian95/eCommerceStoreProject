@@ -21,8 +21,9 @@ namespace eCommerceConsoleApp
 
             //Console.WriteLine(repository.AddCategory("Belts"));
             //Console.WriteLine(repository.RenameCategory(12, "Belt"));
-            Console.WriteLine(repository.DeleteCategory(12));
+            //Console.WriteLine(repository.DeleteCategory(12));
 
+            Console.WriteLine(repository.GetNextCategoryId());
         }
     }
 }
