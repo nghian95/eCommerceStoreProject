@@ -72,13 +72,59 @@ namespace eCommerceMVC.Controllers
                 case -99: return View("Failed");
                 default: return View("AddCategory");
             }
-            
-            
         }
 
-        public IActionResult DeleteCategory()
+        public IActionResult RenameCategory(Models.Categories category)
         {
-            return View();
+            return View(category);
+        }
+
+        public IActionResult SaveRenamedCategory(Models.Categories category)
+        {
+            //eCommerceClassLibrary.Models.Categories entityCategory;
+            //entityCategory = _mapper.Map<eCommerceClassLibrary.Models.Categories>(category);
+            int value = _repository.RenameCategory(category.CategoryId, category.Name);
+            switch (value)
+            {
+                case 1: return View("Success");
+                case 0:
+                case -1:
+                case -99: return View("Failed");
+                default: return View("RenameCategory");
+            }
+        }
+
+        public IActionResult DeleteCategory(Models.Categories category)
+        {
+            return View(category);
+        }
+
+        public IActionResult SaveDeletedCategory(Models.Categories category)
+        {
+            int value = _repository.DeleteCategory(category.CategoryId);
+            switch (value)
+            {
+                case 1: return View("Success");
+                case 0:
+                case -1:
+                case -99: return View("Failed");
+                default: return View("DeleteCategory");
+            }
+        }
+
+        public IActionResult ViewProductsInCategory(Models.Categories category)
+        {
+            eCommerceClassLibrary.Models.Categories entityCategory = _mapper.Map<eCommerceClassLibrary.Models.Categories>(category);
+            List<eCommerceClassLibrary.Models.Products> productsInCategory = _repository.ViewProductsInCategory(entityCategory);
+            if (productsInCategory.Count == 0)
+            {
+                List<Products> products = new List<Products>();
+                return View(products);
+            }
+            else
+            {
+                return View(productsInCategory);
+            }
         }
 
         public IActionResult AddProduct()
@@ -90,5 +136,30 @@ namespace eCommerceMVC.Controllers
         {
             return View();
         }
+
+        public IActionResult EditProduct()
+        {
+            return View();
+        }
+
+        public IActionResult SaveEditedProduct()
+        {
+            return View();
+        }
+        public IActionResult DeleteProduct()
+        {
+            return View();
+        }
+
+        public IActionResult SaveDeletedProduct()
+        {
+            return View();
+        }
+
+        public IActionResult DetailsProduct()
+        {
+            return View();
+        }
+
     }
 }

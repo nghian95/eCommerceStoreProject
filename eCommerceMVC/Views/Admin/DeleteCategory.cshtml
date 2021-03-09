@@ -1,0 +1,30 @@
+﻿@model eCommerceMVC.Models.Categories
+
+@{
+    ViewData["Title"] = "DeleteCategory";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.CategoryId)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CategoryId)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+    </dl>
+    
+    <form asp-action="SaveDeletedCategory" asp-route-categoryId="@Model.CategoryId">
+        <input type="submit" value="Delete" class="btn btn-primary" /> |
+        <a asp-action="Categories">Back to Categories</a>
+    </form>
+</div>
