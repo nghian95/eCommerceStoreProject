@@ -82,7 +82,7 @@ namespace eCommerceClassLibrary
             return products;
         }
 
-        public int ModifyProduct(Products newProduct)
+        public int EditProduct(Products newProduct)
         {
             int value = 0;
             try
@@ -261,6 +261,20 @@ namespace eCommerceClassLibrary
                 value = -99;
             }
             return value;
+        }
+
+        public Categories FindCategory(int categoryId)
+        {
+            Categories category = null;
+            try
+            {
+                category = _context.Categories.Find(categoryId);
+            }
+            catch (Exception ex)
+            {
+                category = null;
+            }
+            return category;
         }
 
         //public int DummyMethod(string variable)

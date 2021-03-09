@@ -1,27 +1,20 @@
 ﻿@model eCommerceMVC.Models.Products
 
 @{
-    ViewData["Title"] = "AddProduct";
+    ViewData["Title"] = "EditProduct";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
 
-<h2>Add @ViewBag.Category</h2>
+<h2>Edit Product</h2>
 
 <hr />
 <div class="row">
     <div class="col-md-4">
-        @*@{ 
-            var params = new Dictionary<string, string>
-            {
-                {"SKU",  },
-                { }
-            };
-        }*@
-        <form asp-action="SaveAddedProduct">
+        <form asp-action="SaveEditedProduct">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="SKU" class="control-label"></label>
-                <input asp-for="SKU" class="form-control" placeholder="PoloT01-B" />
+                <input asp-for="SKU" class="form-control" />
                 <span asp-validation-for="SKU" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -46,7 +39,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="CategoryId" class="control-label"></label>
-                <input asp-for="CategoryId" class="form-control" readonly />
+                <input asp-for="CategoryId" class="form-control" />
                 <span asp-validation-for="CategoryId" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -55,7 +48,7 @@
                 <span asp-validation-for="Sale" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Add" class="btn btn-default" />
+                <input type="submit" value="Save" class="btn btn-default" />
             </div>
         </form>
     </div>
@@ -65,6 +58,3 @@
     <a asp-action="ViewProductsInCategory">Back to List</a>
 </div>
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}

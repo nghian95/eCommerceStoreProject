@@ -5,7 +5,7 @@
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
 
-<h2>Products</h2>
+<h2>All Products</h2>
 
 <p>
     <a asp-action="AddProduct">Add Product</a>
@@ -62,9 +62,9 @@
                 @Html.DisplayFor(modelItem => item.Sale)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                @Html.ActionLink("Edit", "EditProduct", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Details", "DetailsProduct", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Delete", "DeleteProduct", new { /* id=item.PrimaryKey */ })
             </td>
         </tr>
 }

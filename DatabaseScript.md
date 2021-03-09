@@ -11,3 +11,5 @@ CREATE TABLE Users
 )
 
 INSERT INTO Users(UserName, Password, Access) VALUES('admin', 'adminpw', 1), ('customer', 'custpw', 0)
+INSERT INTO Products(SKU, Name) VALUES ('BLUEPOLOSHRT0001', 'Blue Activewear Polo Shirt')
+INSERT INTO Products(SKU, Name, CategoryId) VALUES ('Polo01-R', 'Red Activewear Polo Shirt', 1)

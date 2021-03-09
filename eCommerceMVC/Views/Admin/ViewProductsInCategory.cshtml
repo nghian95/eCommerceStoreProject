@@ -8,7 +8,7 @@
 <h2>ViewProductsInCategory</h2>
 
 <p>
-    <a asp-action="AddProduct">Add Product</a>
+    <a asp-action="AddProduct" asp-route-categoryId=@ViewBag.Id>Add @ViewBag.Category</a>
 </p>
 <table class="table">
     <thead>
@@ -63,7 +63,7 @@
                     @Html.DisplayFor(modelItem => item.Sale)
                 </td>
                 <td>
-                    @Html.ActionLink("Edit", "EditProduct", new { /* id=item.PrimaryKey */ }) |
+                    @Html.ActionLink("Edit", "EditProduct", item) |
                     @Html.ActionLink("Details", "DetailsProduct", new { /* id=item.PrimaryKey */ }) |
                     @Html.ActionLink("Delete", "DeleteProduct", new { /* id=item.PrimaryKey */ })
                 </td>

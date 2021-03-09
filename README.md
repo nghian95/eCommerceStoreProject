@@ -4,12 +4,16 @@
 
 **#TO DO#**
 
-    1) 
-    2) Add other functionalities (add, delete, edit product)
+    1) Add other functionalities ( delete, edit product)
+        Have placeholders for add product as an example
+        Set the correct ones as required.
+    2) 
     3) Add Products through MVC
     4) Create Pages
     5) Authenticate the user. Make sure Admin is only accessible to admins, and customer info is only available to that specific customer or the admin.
 
+**#DOUBLECHECK#**
+    How to pass properties into Action Methods (do we need asp-route-id or the parameter Models.Products or do we need IFormCollection frm)
 
 **#IDEAS#**
 

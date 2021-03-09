@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using eCommerceClassLibrary;
 using eCommerceMVC.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -115,36 +116,71 @@ namespace eCommerceMVC.Controllers
         public IActionResult ViewProductsInCategory(Models.Categories category)
         {
             eCommerceClassLibrary.Models.Categories entityCategory = _mapper.Map<eCommerceClassLibrary.Models.Categories>(category);
-            List<eCommerceClassLibrary.Models.Products> productsInCategory = _repository.ViewProductsInCategory(entityCategory);
-            if (productsInCategory.Count == 0)
+            List<eCommerceClassLibrary.Models.Products> entityProducts = _repository.ViewProductsInCategory(entityCategory);
+            List<Models.Products> modelProducts = new List<Models.Products>();
+            Models.Products modelProduct = null;
+            foreach (var product in entityProducts)
+            {
+                modelProduct = _mapper.Map<Models.Products>(product);
+                modelProducts.Add(modelProduct);
+            }
+            ViewBag.Category = category.Name.Substring(0, category.Name.Length-1);
+            ViewBag.Id = category.CategoryId;
+            if (modelProducts.Count == 0)
             {
                 List<Products> products = new List<Products>();
                 return View(products);
             }
             else
             {
-                return View(productsInCategory);
+                return View(modelProducts);
             }
         }
 
-        public IActionResult AddProduct()
+        public IActionResult AddProduct(int categoryId)
         {
+            eCommerceClassLibrary.Models.Categories category = _repository.FindCategory(categoryId);
+            ViewBag.Category = category.Name.Substring(0, category.Name.Length - 1);
             return View();
         }
 
-        public IActionResult SaveAddedProduct()
+        public IActionResult SaveAddedProduct(/*IFormCollection frm*/Models.Products products)
         {
-            return View();
+            Products product = new Products();
+            //product.SKU = frm["SKU"];
+            //product.Name = frm["Name"];
+            //product.Quantity = Convert.ToInt32(frm["Quantity"]);
+            //product.CategoryId = Convert.ToInt32(frm["CategoryId"]);
+            eCommerceClassLibrary.Models.Products entityProduct = new eCommerceClassLibrary.Models.Products();
+            entityProduct = _mapper.Map<eCommerceClassLibrary.Models.Products>(products);
+            int value = _repository.AddProduct(entityProduct);
+            switch (value)
+            {
+                case 1: return View("Success");
+                case 0:
+                case -1:
+                case -99: return View("Failed");
+                default: return View("DeleteCategory");
+            }
         }
 
-        public IActionResult EditProduct()
+        public IActionResult EditProduct(Models.Products product)
         {
-            return View();
+            return View(product);
         }
 
-        public IActionResult SaveEditedProduct()
+        public IActionResult SaveEditedProduct(Models.Products product)
         {
-            return View();
+            eCommerceClassLibrary.Models.Products entityProduct = _mapper.Map<eCommerceClassLibrary.Models.Products>(product);
+            int value = _repository.EditProduct(entityProduct);
+            switch (value)
+            {
+                case 1: return View("Success");
+                case 0:
+                case -1:
+                case -99: return View("Failed");
+                default: return View("DeleteCategory");
+            }
         }
         public IActionResult DeleteProduct()
         {
