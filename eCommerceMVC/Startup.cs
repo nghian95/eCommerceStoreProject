@@ -5,6 +5,7 @@ using eCommerceMVC.Repository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -29,7 +30,7 @@ namespace eCommerceMVC
         {
             services.AddControllersWithViews();
             services.AddMvc();
-            services.AddSingleton<eCommerceRepository>(new eCommerceRepository(new eCommerceDBContext()));
+            services.AddSingleton<eCommerceRepository>(new eCommerceRepository(new eCommerceDBContext(new DbContextOptions<eCommerceDBContext>())));
             services.AddAutoMapper(x => x.AddProfile(new eCommerceMapper()));
             //services.AddHttpContextAccessor();
             //services.AddSession();

@@ -8,7 +8,7 @@
 <h2>All Products</h2>
 
 <p>
-    <a asp-action="AddProduct">Add Product</a>
+    <a asp-action="AddProductAlone">Add Product</a>
 </p>
 <table class="table">
     <thead>
@@ -62,9 +62,9 @@
                 @Html.DisplayFor(modelItem => item.Sale)
             </td>
             <td>
-                @Html.ActionLink("Edit", "EditProduct", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "DetailsProduct", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "DeleteProduct", new { /* id=item.PrimaryKey */ })
+                @Html.ActionLink("Edit", "EditProduct", item) |
+                @Html.ActionLink("Details", "DetailsProduct", item) |
+                @Html.ActionLink("Delete", "DeleteProduct", item)
             </td>
         </tr>
 }

@@ -67,6 +67,8 @@ namespace eCommerceClassLibrary.Models
                     .HasMaxLength(40)
                     .IsUnicode(false);
 
+                entity.Property(e => e.Price).HasColumnType("decimal(18, 0)");
+
                 entity.HasOne(d => d.Category)
                     .WithMany(p => p.Products)
                     .HasForeignKey(d => d.CategoryId)

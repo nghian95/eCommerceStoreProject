@@ -144,6 +144,11 @@ namespace eCommerceMVC.Controllers
             return View();
         }
 
+        public IActionResult AddProductAlone()
+        {
+            return View();
+        }
+
         public IActionResult SaveAddedProduct(/*IFormCollection frm*/Models.Products products)
         {
             Products product = new Products();
@@ -182,19 +187,27 @@ namespace eCommerceMVC.Controllers
                 default: return View("DeleteCategory");
             }
         }
-        public IActionResult DeleteProduct()
+        public IActionResult DeleteProduct(Models.Products product)
         {
-            return View();
+            return View(product);
         }
 
-        public IActionResult SaveDeletedProduct()
+        public IActionResult SaveDeletedProduct(Models.Products product)
         {
-            return View();
+            int value = _repository.DeleteProduct(product.SKU);
+            switch (value)
+            {
+                case 1: return View("Success");
+                case 0:
+                case -1:
+                case -99: return View("Failed");
+                default: return View("DeleteCategory");
+            }
         }
 
-        public IActionResult DetailsProduct()
+        public IActionResult DetailsProduct(Models.Products product)
         {
-            return View();
+            return View(product);
         }
 
     }

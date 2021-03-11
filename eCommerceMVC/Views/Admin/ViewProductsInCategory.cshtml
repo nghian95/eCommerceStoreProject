@@ -3,12 +3,32 @@
 @{
     ViewData["Title"] = "ViewProductsInCategory";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
-}
+    var categories = @ViewBag.Category + 's';
+    var category = "Test";
+    switch (@ViewBag.Category)
+    {
+        case "Scarve": category = "Scarf";
+            break;
+        case "Short": category = "Shorts";
+            break;
+        case "Tight": category = "Tights";
+            break;
+        case "Underwea": category = "Underwear";
+            categories = "Underwear";
+            break;
+        case "Watche": category = "Watch";
+            break;
+        case "Shoe": category = "Shoes";
+            break;
+        default: category = @ViewBag.Category;
+            break;
 
-<h2>ViewProductsInCategory</h2>
+    }
+}
+<h2>View All @categories</h2>
 
 <p>
-    <a asp-action="AddProduct" asp-route-categoryId=@ViewBag.Id>Add @ViewBag.Category</a>
+    <a asp-action="AddProduct" asp-route-categoryId=@ViewBag.Id>Add @category</a>
 </p>
 <table class="table">
     <thead>
@@ -63,7 +83,8 @@
                     @Html.DisplayFor(modelItem => item.Sale)
                 </td>
                 <td>
-                    @Html.ActionLink("Edit", "EditProduct", item) |
+                    @*@Html.ActionLink("Edit", "EditProduct", item) |*@
+                    @Html.ActionLink("Edit", "EditProduct", new { SKU = item.SKU, Name = item.Name, Quantity = item.Quantity, Description = item.Description, Price = item.Price, CategoryId = item.CategoryId, Sale = item.Sale })|
                     @Html.ActionLink("Details", "DetailsProduct", new { /* id=item.PrimaryKey */ }) |
                     @Html.ActionLink("Delete", "DeleteProduct", new { /* id=item.PrimaryKey */ })
                 </td>

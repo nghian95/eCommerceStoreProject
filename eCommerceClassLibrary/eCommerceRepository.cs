@@ -87,32 +87,51 @@ namespace eCommerceClassLibrary
             int value = 0;
             try
             {
-                //Products product = _context.Products.Find(SKU);
-                _context.Update(newProduct);
+                Products products = _context.Products.Find(newProduct.Sku);
+                products.Sku = newProduct.Sku;
+                products.Name = newProduct.Name;
+                products.Quantity = newProduct.Quantity;
+                products.Description = newProduct.Description;
+                products.Price = newProduct.Price;
+                products.CategoryId = newProduct.CategoryId;
+                products.Sale = newProduct.Sale;
+                //Console.WriteLine(newProduct.Sku);
+                //using (var newContext = new eCommerceDBContext())
+                //{
+                //    newContext.Products.Update(newProduct);
+                //    newContext.SaveChanges();
+                //}
+                _context.Products.Update(products);
                 _context.SaveChanges();
                 Products product = _context.Products.Find(newProduct.Sku);
-                if (product == newProduct)
+                bool equal = (newProduct.Sku.Equals(product.Sku) && newProduct.Name.Equals(product.Name) && newProduct.Quantity.Equals(product.Quantity) &&
+                  newProduct.Description.Equals(product.Description) && newProduct.Price.Equals(product.Price) && newProduct.CategoryId.Equals(product.CategoryId) &&
+                  newProduct.Sale.Equals(product.Sale));
+                if (equal)
                 {
                     value = 1;
-                } else
+                }
+                else
                 {
                     value = -1;
                 }
             } catch (Exception ex)
             {
+                Console.WriteLine(ex.Message);
                 value = -99;
             }
             return value;
         }
 
-        public int DeleteProduct(Products product)
+        public int DeleteProduct(string Sku)
         {
             int value = 0;
             try
             {
+                Products product = _context.Products.Find(Sku);
                 _context.Products.Remove(product);
                 _context.SaveChanges();
-                if (_context.Products.Find(product) == null)
+                if (_context.Products.Find(Sku) == null)
                 {
                     value = 1;
                 } else
@@ -121,6 +140,7 @@ namespace eCommerceClassLibrary
                 }
             } catch (Exception ex)
             {
+                Console.WriteLine(ex.Message);
                 value = -99;
             }
             return value;
