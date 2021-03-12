@@ -1,8 +1,12 @@
-﻿@model IEnumerable<eCommerceMVC.Models.Categories>
+﻿@inject Microsoft.AspNetCore.Http.IHttpContextAccessor httpContextAccessor
+@model IEnumerable<eCommerceMVC.Models.Categories>
 
 @{
     ViewData["Title"] = "Categories";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    var categories = httpContextAccessor.HttpContext.Request.Cookies["Category"];
+    var cookieCategoryId = Int32.Parse(httpContextAccessor.HttpContext.Request.Cookies["CategoryId"]);
+    var cookieCategory = categories.Substring(0, categories.Length - 1);
 }
 
 <h2>Categories</h2>
@@ -23,20 +27,21 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.CategoryId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.ActionLink("Rename", "RenameCategory", new {  CategoryId=item.CategoryId, Name=item.Name }) |
-                @Html.ActionLink("View Products", "ViewProductsInCategory", new { CategoryId=item.CategoryId, Name=item.Name}) |
-                @Html.ActionLink("Delete", "DeleteCategory", new { CategoryId = item.CategoryId, Name = item.Name })
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CategoryId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.ActionLink("View Products", "ViewProductsInCategory", new { CategoryId = item.CategoryId, Name = item.Name }) |
+                    @Html.ActionLink("Rename", "RenameCategory", new { CategoryId = item.CategoryId, Name = item.Name }) |
+                    @Html.ActionLink("Delete", "DeleteCategory", new { CategoryId = item.CategoryId, Name = item.Name })
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

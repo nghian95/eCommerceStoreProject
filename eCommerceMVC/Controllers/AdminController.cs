@@ -16,12 +16,15 @@ namespace eCommerceMVC.Controllers
         private readonly ILogger<AdminController> _logger;
         private readonly eCommerceRepository _repository;
         private readonly IMapper _mapper;
+        private CookieOptions option = new CookieOptions();
+
 
         public AdminController(ILogger<AdminController> logger, eCommerceRepository repository, IMapper mapper)
         {
             _logger = logger;
             _repository = repository;
             _mapper = mapper;
+
         }
 
         public IActionResult HomePage()
@@ -31,6 +34,8 @@ namespace eCommerceMVC.Controllers
 
         public IActionResult Categories()
         {
+            Response.Cookies.Append("BackLink", "Categories", option);
+
             List<eCommerceClassLibrary.Models.Categories> categories = _repository.ViewCategories();
             List<Categories> mvcCategories = new List<Categories>();
             Categories mvcCategory = new Categories();
@@ -44,6 +49,8 @@ namespace eCommerceMVC.Controllers
 
         public IActionResult Products()
         {
+            Response.Cookies.Append("BackLink", "Products", option);
+
             List<eCommerceClassLibrary.Models.Products> products = _repository.ViewAllProducts();
             List<Products> modelProducts = new List<Products>();
             Products product = new Products();
@@ -115,6 +122,8 @@ namespace eCommerceMVC.Controllers
 
         public IActionResult ViewProductsInCategory(Models.Categories category)
         {
+            Response.Cookies.Append("BackLink", "SpecificCategory", option);
+
             eCommerceClassLibrary.Models.Categories entityCategory = _mapper.Map<eCommerceClassLibrary.Models.Categories>(category);
             List<eCommerceClassLibrary.Models.Products> entityProducts = _repository.ViewProductsInCategory(entityCategory);
             List<Models.Products> modelProducts = new List<Models.Products>();
@@ -124,8 +133,8 @@ namespace eCommerceMVC.Controllers
                 modelProduct = _mapper.Map<Models.Products>(product);
                 modelProducts.Add(modelProduct);
             }
-            ViewBag.Category = category.Name.Substring(0, category.Name.Length-1);
-            ViewBag.Id = category.CategoryId;
+            Response.Cookies.Append("Category", category.Name, option);
+            Response.Cookies.Append("CategoryId", ""+category.CategoryId, option);
             if (modelProducts.Count == 0)
             {
                 List<Products> products = new List<Products>();
@@ -140,7 +149,6 @@ namespace eCommerceMVC.Controllers
         public IActionResult AddProduct(int categoryId)
         {
             eCommerceClassLibrary.Models.Categories category = _repository.FindCategory(categoryId);
-            ViewBag.Category = category.Name.Substring(0, category.Name.Length - 1);
             return View();
         }
 
@@ -169,10 +177,17 @@ namespace eCommerceMVC.Controllers
             }
         }
 
+        public IActionResult DuplicateProduct(Models.Products product)
+        {
+            
+            return View(product);
+        }
+
         public IActionResult EditProduct(Models.Products product)
         {
             return View(product);
         }
+
 
         public IActionResult SaveEditedProduct(Models.Products product)
         {
@@ -205,10 +220,10 @@ namespace eCommerceMVC.Controllers
             }
         }
 
-        public IActionResult DetailsProduct(Models.Products product)
-        {
-            return View(product);
-        }
+        //public IActionResult DetailsProduct(Models.Products product)
+        //{
+        //    return View(product);
+        //}
 
     }
 }

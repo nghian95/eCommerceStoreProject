@@ -1,8 +1,12 @@
-﻿@model IEnumerable<eCommerceMVC.Models.Products>
+﻿@inject Microsoft.AspNetCore.Http.IHttpContextAccessor httpContextAccessor
+@model IEnumerable<eCommerceMVC.Models.Products>
 
 @{
     ViewData["Title"] = "Products";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    var categories = httpContextAccessor.HttpContext.Request.Cookies["Category"];
+    var cookieCategoryId = Int32.Parse(httpContextAccessor.HttpContext.Request.Cookies["CategoryId"]);
+    var cookieCategory = categories.Substring(0, categories.Length - 1);
 }
 
 <h2>All Products</h2>
@@ -38,35 +42,36 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.SKU)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Quantity)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Price)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CategoryId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Sale)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "EditProduct", item) |
-                @Html.ActionLink("Details", "DetailsProduct", item) |
-                @Html.ActionLink("Delete", "DeleteProduct", item)
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SKU)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Quantity)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CategoryId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Sale)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "EditProduct", item) |
+                    @Html.ActionLink("Duplicate", "DuplicateProduct", item) |
+                    @Html.ActionLink("Delete", "DeleteProduct", item)
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

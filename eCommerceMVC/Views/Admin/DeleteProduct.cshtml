@@ -1,8 +1,11 @@
-﻿@model eCommerceMVC.Models.Products
+﻿@inject Microsoft.AspNetCore.Http.IHttpContextAccessor httpContextAccessor
+@model eCommerceMVC.Models.Products
 
 @{
     ViewData["Title"] = "DeleteProduct";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    var cookieCategory = httpContextAccessor.HttpContext.Request.Cookies["Category"];
+    var cookieCategoryId = httpContextAccessor.HttpContext.Request.Cookies["CategoryId"];
 }
 
 <h3>Are you sure you want to delete this product?</h3>
@@ -52,9 +55,25 @@
             @Html.DisplayFor(model => model.Sale)
         </dd>
     </dl>
-    
+
     <form asp-action="SaveDeletedProduct" asp-route-sku="@Model.SKU">
-        <input type="submit" value="Delete" class="btn btn-primary" /> |
-        <a asp-action="ViewProductsInCategory">Back to List</a>
+        <input type="submit" value="Delete" class="btn btn-primary" />
     </form>
+    @{
+        switch (httpContextAccessor.HttpContext.Request.Cookies["BackLink"])
+        {
+            case "Products":
+                <a asp-action="Products">Back to List</a>
+                break;
+            case "SpecificCategory":
+                <a asp-action="ViewProductsInCategory" asp-route-categoryId="@cookieCategoryId" asp-route-Name="@cookieCategory">Back to List</a>
+                break;
+            case "Categories":
+                <a asp-action="Categories">Back to List</a>
+                break;
+            default:
+                <a asp-action="Categories">Back to List</a>
+                break;
+        }
+    }
 </div>
