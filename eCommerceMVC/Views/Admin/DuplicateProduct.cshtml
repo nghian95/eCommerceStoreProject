@@ -1,11 +1,15 @@
-﻿@model eCommerceMVC.Models.Products
+﻿@inject Microsoft.AspNetCore.Http.IHttpContextAccessor httpContextAccessor;
+@model eCommerceMVC.Models.Products
 
 @{
-    ViewData["Title"] = "AddProductAlone";
+    ViewData["Title"] = "DuplicateProduct";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    var cookieCategory = httpContextAccessor.HttpContext.Request.Cookies["Category"];
+    var cookieCategoryId = httpContextAccessor.HttpContext.Request.Cookies["CategoryId"];
+
 }
 
-<h2>Add Product</h2>
+<h2>Duplicate Product</h2>
 
 <hr />
 <div class="row">
@@ -14,7 +18,7 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="SKU" class="control-label"></label>
-                <input asp-for="SKU" class="form-control" placeholder="PoloT01-B" />
+                <input asp-for="SKU" class="form-control" />
                 <span asp-validation-for="SKU" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -55,11 +59,32 @@
 </div>
 
 <div>
+    @*@{
+            if (TempData["BackLink"].Equals("Products"))
+            {
+                <a asp-action="Products">Back to List</a>
+            }
+            else
+            {
+                <a asp-action="ViewProductsInCategory" asp-route-categoryId="@ViewBag.CategoryId" asp-route-Name="@ViewBag.Name">Back to List</a>
+            }
+        }*@
     @{
-        <a asp-action="Products">Back to List</a>
+        switch (httpContextAccessor.HttpContext.Request.Cookies["BackLink"])
+        {
+            case "Products":
+                <a asp-action="Products">Back to List</a>
+                break;
+            case "SpecificCategory":
+                <a asp-action="ViewProductsInCategory" asp-route-categoryId="@cookieCategoryId" asp-route-Name="@cookieCategory">Back to List</a>
+                break;
+            case "Categories":
+                <a asp-action="Categories">Back to List</a>
+                break;
+            default:
+                <a asp-action="Categories">Back to List</a>
+                break;
+        }
     }
 </div>
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}

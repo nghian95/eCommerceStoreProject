@@ -1,8 +1,27 @@
-﻿
+﻿@inject Microsoft.AspNetCore.Http.IHttpContextAccessor httpContextAccessor
+
 @{
     ViewData["Title"] = "View";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    var cookieCategory = httpContextAccessor.HttpContext.Request.Cookies["Category"];
+    var cookieCategoryId = httpContextAccessor.HttpContext.Request.Cookies["CategoryId"];
 }
 
 <h2>Failed</h2>
-
+@{
+    switch (httpContextAccessor.HttpContext.Request.Cookies["BackLink"])
+    {
+        case "Products":
+            <a asp-action="Products">Back to List</a>
+            break;
+        case "SpecificCategory":
+            <a asp-action="ViewProductsInCategory" asp-route-categoryId="@cookieCategoryId" asp-route-Name="@cookieCategory">Back to List</a>
+            break;
+        case "Categories":
+            <a asp-action="Categories">Back to List</a>
+            break;
+        default:
+            <a asp-action="Categories">Back to List</a>
+            break;
+    }
+}

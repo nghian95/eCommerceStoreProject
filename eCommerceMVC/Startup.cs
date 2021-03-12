@@ -32,8 +32,8 @@ namespace eCommerceMVC
             services.AddMvc();
             services.AddSingleton<eCommerceRepository>(new eCommerceRepository(new eCommerceDBContext(new DbContextOptions<eCommerceDBContext>())));
             services.AddAutoMapper(x => x.AddProfile(new eCommerceMapper()));
-            //services.AddHttpContextAccessor();
-            //services.AddSession();
+            services.AddHttpContextAccessor();
+            services.AddSession();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -1,34 +1,47 @@
-﻿@model IEnumerable<eCommerceMVC.Models.Products>
+﻿@inject Microsoft.AspNetCore.Http.IHttpContextAccessor httpContextAccessor;
+@model IEnumerable<eCommerceMVC.Models.Products>
 
 @{
     ViewData["Title"] = "ViewProductsInCategory";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
-    var categories = @ViewBag.Category + 's';
+    var categories = httpContextAccessor.HttpContext.Request.Cookies["Category"];
+    var cookieCategoryId = Int32.Parse(httpContextAccessor.HttpContext.Request.Cookies["CategoryId"]);
+    var cookieCategory = categories.Substring(0, categories.Length - 1);
     var category = "Test";
-    switch (@ViewBag.Category)
+    switch (cookieCategory)
     {
-        case "Scarve": category = "Scarf";
+        case "Scarve":
+            category = "Scarf";
             break;
-        case "Short": category = "Shorts";
+        case "Short":
+            category = "Shorts";
             break;
-        case "Tight": category = "Tights";
+        case "Tight":
+            category = "Tights";
             break;
-        case "Underwea": category = "Underwear";
+        case "Underwea":
+            category = "Underwear";
             categories = "Underwear";
             break;
-        case "Watche": category = "Watch";
+        case "Watche":
+            category = "Watch";
             break;
-        case "Shoe": category = "Shoes";
+        case "Shoe":
+            category = "Shoes";
             break;
-        default: category = @ViewBag.Category;
+        case "Earmuff":
+            category = "Earmuffs";
             break;
-
+        default:
+            category = cookieCategory;
+            break;
     }
+    //TempData["BackLink"] = "SpecificCategory";
 }
 <h2>View All @categories</h2>
 
 <p>
-    <a asp-action="AddProduct" asp-route-categoryId=@ViewBag.Id>Add @category</a>
+    <a asp-action="AddProduct" asp-route-categoryId=@cookieCategoryId>Add @category</a>
 </p>
 <table class="table">
     <thead>
@@ -58,8 +71,8 @@
         </tr>
     </thead>
     <tbody>
-    @foreach (var item in Model)
-    {
+        @foreach (var item in Model)
+        {
             <tr>
                 <td>
                     @Html.DisplayFor(modelItem => item.SKU)
@@ -84,11 +97,11 @@
                 </td>
                 <td>
                     @*@Html.ActionLink("Edit", "EditProduct", item) |*@
-                    @Html.ActionLink("Edit", "EditProduct", new { SKU = item.SKU, Name = item.Name, Quantity = item.Quantity, Description = item.Description, Price = item.Price, CategoryId = item.CategoryId, Sale = item.Sale })|
-                    @Html.ActionLink("Details", "DetailsProduct", new { /* id=item.PrimaryKey */ }) |
-                    @Html.ActionLink("Delete", "DeleteProduct", new { /* id=item.PrimaryKey */ })
+                    @Html.ActionLink("Edit", "EditProduct", new { SKU = item.SKU, Name = item.Name, Quantity = item.Quantity, Description = item.Description, Price = item.Price, CategoryId = item.CategoryId, Sale = item.Sale }) |
+                    @Html.ActionLink("Duplicate", "DuplicateProduct", item) |
+                    @Html.ActionLink("Delete", "DeleteProduct", item)
                 </td>
             </tr>
-    }
+        }
     </tbody>
 </table>

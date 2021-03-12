@@ -1,22 +1,25 @@
-﻿@model eCommerceMVC.Models.Products
+﻿@inject Microsoft.AspNetCore.Http.IHttpContextAccessor httpContextAccessor
+@model eCommerceMVC.Models.Products
 
 @{
     ViewData["Title"] = "AddProduct";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    var cookieCategory = httpContextAccessor.HttpContext.Request.Cookies["Category"];
+    var cookieCategoryId = httpContextAccessor.HttpContext.Request.Cookies["CategoryId"];
 }
 
-<h2>Add @ViewBag.Category</h2>
+<h2>Add @cookieCategory</h2>
 
 <hr />
 <div class="row">
     <div class="col-md-4">
-        @*@{ 
-            var params = new Dictionary<string, string>
-            {
-                {"SKU",  },
-                { }
-            };
-        }*@
+        @*@{
+                var params = new Dictionary<string, string>
+                {
+                    {"SKU",  },
+                    { }
+                };
+            }*@
         <form asp-action="SaveAddedProduct">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
@@ -62,7 +65,23 @@
 </div>
 
 <div>
-    <a asp-action="ViewProductsInCategory">Back to List</a>
+    @{
+        switch (httpContextAccessor.HttpContext.Request.Cookies["BackLink"])
+        {
+            case "Products":
+                <a asp-action="Products">Back to List</a>
+                break;
+            case "SpecificCategory":
+                <a asp-action="ViewProductsInCategory" asp-route-categoryId="@cookieCategoryId" asp-route-Name="@cookieCategory">Back to List</a>
+                break;
+            case "Categories":
+                <a asp-action="Categories">Back to List</a>
+                break;
+            default:
+                <a asp-action="Categories">Back to List</a>
+                break;
+        }
+    }
 </div>
 
 @section Scripts {
