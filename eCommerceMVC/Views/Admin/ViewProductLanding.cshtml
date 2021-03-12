@@ -1,0 +1,69 @@
+﻿@model eCommerceMVC.Models.Products
+
+@{
+    ViewData["Title"] = "ViewProductLanding";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h2>&nbsp; @TempData["Name"]</h2>
+
+<div class="container">
+    <hr />
+    @*<img src='<%=Url.Action("show", "image", new {id=ViewData["ImageID"]})%' />*@
+    <div class="row">
+        <div class="col-md-6">
+            <img class="img-fluid" src="@Url.Action("show", "image", new { id = ViewData["ImageID"] })" style="width:512px" />
+        </div>
+        <div class="col-md-6">
+            <dl class="dl-horizontal">
+                <dt>
+                    @Html.DisplayNameFor(model => model.SKU)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.SKU)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Name)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Name)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Quantity)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Quantity)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Description)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Description)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Price)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Price)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.CategoryId)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.CategoryId)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Sale)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Sale)
+                </dd>
+            </dl>
+            <div>
+                @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+                <a asp-action="Index">Back to List</a>
+            </div>
+        </div>
+    </div>
+</div>
+

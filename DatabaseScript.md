@@ -26,3 +26,21 @@ CREATE TABLE [dbo].[Products] (
 
 INSERT INTO Products(SKU, Name) VALUES ('BLUEPOLOSHRT0001', 'Blue Activewear Polo Shirt')
 INSERT INTO Products(SKU, Name, CategoryId) VALUES ('Polo01-R', 'Red Activewear Polo Shirt', 1)
+
+CREATE TABLE Images 
+(
+	[ImageID] [int] IDENTITY (1,1) PRIMARY KEY,
+	[ImageName] [varchar](40) NOT NULL,
+	[OriginalFormat] [nvarchar](5) NOT NULL,
+	[ImageFile] [varbinary](max) NOT NULL,
+	[SKU] [varchar](20) NOT NULL
+)
+
+INSERT INTO Images (ImageName, OriginalFormat, ImageFile, SKU) SELECT
+
+      'Yellow Hoodie 01'
+      ,'jpg'
+      ,ImageFile
+	  ,'CotnHD01-Y'
+
+FROM OPENROWSET(BULK N'D:\Downloads\Yellow Hoodie.jpg', SINGLE_BLOB) AS ImageSource(ImageFile);

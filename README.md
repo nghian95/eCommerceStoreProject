@@ -6,6 +6,9 @@
 
 *IMPORTANT*
 
+    - Create Product Landing page 
+        - Be able to upload images as admin
+        - See multiple images of the same product
     - Explore dropdown menus (i.e. for CategoryId when adding product)
     - Create Pages
     - Create sessions that store user info.

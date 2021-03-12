@@ -16,6 +16,7 @@ namespace eCommerceClassLibrary.Models
         }
 
         public virtual DbSet<Categories> Categories { get; set; }
+        public virtual DbSet<Images> Images { get; set; }
         public virtual DbSet<Products> Products { get; set; }
         public virtual DbSet<Users> Users { get; set; }
 
@@ -46,6 +47,30 @@ namespace eCommerceClassLibrary.Models
                     .IsUnicode(false);
             });
 
+            modelBuilder.Entity<Images>(entity =>
+            {
+                entity.HasKey(e => e.ImageId);
+
+                entity.Property(e => e.ImageId).HasColumnName("ImageID");
+
+                entity.Property(e => e.ImageFile).IsRequired();
+
+                entity.Property(e => e.ImageName)
+                    .IsRequired()
+                    .HasMaxLength(40)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.OriginalFormat)
+                    .IsRequired()
+                    .HasMaxLength(5);
+
+                entity.Property(e => e.Sku)
+                    .IsRequired()
+                    .HasColumnName("SKU")
+                    .HasMaxLength(20)
+                    .IsUnicode(false);
+            });
+
             modelBuilder.Entity<Products>(entity =>
             {
                 entity.HasKey(e => e.Sku);
@@ -66,8 +91,6 @@ namespace eCommerceClassLibrary.Models
                     .IsRequired()
                     .HasMaxLength(40)
                     .IsUnicode(false);
-
-                entity.Property(e => e.Price).HasColumnType("decimal(18, 0)");
 
                 entity.HasOne(d => d.Category)
                     .WithMany(p => p.Products)

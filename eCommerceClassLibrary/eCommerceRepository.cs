@@ -331,6 +331,79 @@ namespace eCommerceClassLibrary
             return (category, message);
         }
 
+        public (int, string, List<byte[]>) ShowImages(string SKU)
+        {
+            int value = 0;
+            string message = "";
+            byte[] imgData = null;
+            List<byte[]> imageBytes = new List<byte[]>();
+            try
+            {
+                List<Images> images = _context.Images.Where(x => x.Sku == SKU).ToList();
+                foreach (var image in images)
+                {
+                    imageBytes.Add(image.ImageFile);
+                }
+                if (imageBytes != null)
+                {
+                    value = 1;
+                }
+                else
+                {
+                    value = -1;
+                    message = "Images were not found successfully.";
+                }
+            }
+            catch (Exception ex)
+            {
+                value = -99;
+                message = ex.Message;
+            }
+            return (value, message, imageBytes);
+        }
+
+        public (int, string, byte[]) ShowSingleImage(int id)
+        {
+            int value = 0;
+            string message = "";
+            byte[] imgData = null;
+            try
+            {
+                imgData = _context.Images.Find(id).ImageFile;
+                if (imgData != null)
+                {
+                    value = 1;
+                }
+                else
+                {
+                    value = -1;
+                    message = "Image was not found successfully.";
+                }
+            }
+            catch (Exception ex)
+            {
+                value = -99;
+                message = ex.Message;
+            }
+            return (value, message, imgData);
+        }
+
+        public int FindImageId(string SKU)
+        {
+            int value = -1;
+            string message = "";
+            try
+            {
+                List<Images> images = _context.Images.Where(x => x.Sku == SKU).ToList();
+                value = images[0].ImageId;
+            } catch (Exception ex)
+            {
+                value = -99;
+                message = ex.Message;
+            }
+            return value;
+        }
+
         //public int DummyMethod(string variable)
         //{
         //    int value = 0;

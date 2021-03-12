@@ -26,7 +26,6 @@ namespace eCommerceMVC.Controllers
             _logger = logger;
             _repository = repository;
             _mapper = mapper;
-
         }
 
         public IActionResult HomePage()
@@ -337,6 +336,16 @@ namespace eCommerceMVC.Controllers
         //    await HttpContext.SignInAsync(principal);
         //    return RedirectToAction(“Index”, “Home”);
         //}
+
+        public IActionResult ViewProductLanding(Models.Products product)
+        {
+            TempData["Name"] = product.Name;
+            var tuple = _repository.ShowImages(product.SKU);
+            int id = _repository.FindImageId(product.SKU);
+            ViewData["ImageID"] = id;
+            var image = _repository.ShowSingleImage(id);
+            return View(product);
+        }
 
     }
 
