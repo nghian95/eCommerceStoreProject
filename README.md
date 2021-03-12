@@ -4,15 +4,20 @@
 
 **#TO DO#**
 
-    - Set the correct properties for add product as required.
+*IMPORTANT*
+
     - Explore dropdown menus (i.e. for CategoryId when adding product)
     - Create Pages
-    - Authenticate the user. Make sure Admin is only accessible to admins, and customer info is only available to that specific customer or the admin.
     - Create sessions that store user info.
     - Create Customer pages.
     - Differentiate no-user pages and customer pages
-    - For Failed pages, print out the error message.
+    - Set up Data Annotations for min/max string length, type, etc. for models
+    - Hide empty fields in DeleteProduct
+    - Logout
+*OPTIONAL*
+
     - Redirect from Success/Failure after 5 seconds.
+    - Cookie-based Authentication / Identity-based Authentication
 
 **#DOUBLECHECK#**
     How to pass properties into Action Methods (do we need asp-route-id or the parameter Models.Products or do we need IFormCollection frm)
@@ -28,4 +33,4 @@
     Products have Primary Key SKU [VarChar(20)]
     CategoryID is a Foreign Key 
 
-    SKU example: BLUEPOLO0001
+    SKU example: PoloT01-R for Red Polo Shirt

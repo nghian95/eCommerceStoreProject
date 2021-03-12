@@ -2,6 +2,7 @@ using AutoMapper;
 using eCommerceClassLibrary;
 using eCommerceClassLibrary.Models;
 using eCommerceMVC.Repository;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -34,6 +35,12 @@ namespace eCommerceMVC
             services.AddAutoMapper(x => x.AddProfile(new eCommerceMapper()));
             services.AddHttpContextAccessor();
             services.AddSession();
+            //services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options =>
+            //{
+            //    options.LoginPath = "Home/Login";
+            //    options.LogoutPath = "Home/LogOut";
+            //    options.Cookie.Name = "Our_Unique_Cookie";
+            //});
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -63,7 +70,7 @@ namespace eCommerceMVC
                     pattern: "{controller=Home}/{action=HomePage}/{id?}");
             });
 
-            
+            app.UseAuthentication();
 
         }
     }

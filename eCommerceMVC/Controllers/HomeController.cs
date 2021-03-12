@@ -27,6 +27,8 @@ namespace eCommerceMVC.Controllers
 
         public IActionResult HomePage()
         {
+            CookieOptions option = new CookieOptions();
+            Response.Cookies.Append("Access", "" + -1, option);
             return View();
         }
 
@@ -50,10 +52,15 @@ namespace eCommerceMVC.Controllers
         {
             string userName = frm["username"];
             string password = frm["password"];
-            int value = _repository.ValidateCredentials(userName, password);
+            var tuple = _repository.ValidateCredentials(userName, password);
+            int value = tuple.Item1;
+            ViewBag.Message = tuple.Item2;
             switch (value)
             {
-                case 1: return RedirectToAction("HomePage", "Admin");
+                case 1:
+                    CookieOptions option = new CookieOptions();
+                    Response.Cookies.Append("Access", ""+tuple.Item3, option);
+                    return RedirectToAction("HomePage", "Admin");
                 case -1: return RedirectToAction("Login");
                 case -99: return RedirectToAction("Login");
                 default: return RedirectToAction("Login");
@@ -62,7 +69,9 @@ namespace eCommerceMVC.Controllers
 
         public IActionResult Categories()
         {
-            List<eCommerceClassLibrary.Models.Categories> categories = _repository.ViewCategories();
+            var result = _repository.ViewCategories();
+            List<eCommerceClassLibrary.Models.Categories> categories = result.Item1;
+            ViewBag.Message = result.Item2;
             List<Categories> mvcCategories = new List<Categories>();
             Categories mvcCategory = new Categories();
             foreach(eCommerceClassLibrary.Models.Categories category in categories)
@@ -75,7 +84,9 @@ namespace eCommerceMVC.Controllers
 
         public IActionResult Products()
         {
-            List<eCommerceClassLibrary.Models.Products> products = _repository.ViewAllProducts();
+            var tuple = _repository.ViewAllProducts();
+            List<eCommerceClassLibrary.Models.Products> products = tuple.Item1;
+            ViewBag.Message = tuple.Item2;
             List<Products> modelProducts = new List<Products>();
             Products product = new Products();
             foreach (var prod in products)
@@ -84,6 +95,11 @@ namespace eCommerceMVC.Controllers
                 modelProducts.Add(product);
             }
             return View(modelProducts);
+        }
+
+        public IActionResult LogOut()
+        {
+            return View();
         }
     }
 }

@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
+
 namespace eCommerceClassLibrary
 {
     public class eCommerceRepository
@@ -14,9 +15,10 @@ namespace eCommerceClassLibrary
             _context = context;
         }
 
-        public int AddProduct(Products product)
+        public (int, string) AddProduct(Products product)
         {
             int status = 0;
+            string message = "";
             try
             {
                 _context.Products.Add(product);
@@ -27,17 +29,20 @@ namespace eCommerceClassLibrary
                 } else
                 {
                     status = -1;
+                    message = "Product was not added successfully.";
                 }
             } catch (Exception ex)
             {
                 status = -99;
+                message = ex.Message;
             }
-             return status;
+             return (status, message);
         }
 
-        public List<Categories> ViewCategories()
+        public (List<Categories>, string) ViewCategories()
         {
             List<Categories> categories = null;
+            string message = "";
             try
             {
                 categories = _context.Categories.ToList();
@@ -48,13 +53,15 @@ namespace eCommerceClassLibrary
             } catch (Exception ex)
             {
                 categories = null;
+                message = ex.Message;
             }
-            return categories;
+            return (categories, message);
         }
 
-        public List<Products> ViewProductsInCategory(Categories category)
+        public (List<Products>, string) ViewProductsInCategory(Categories category)
         {
             List<Products> products = null;
+            string message = "";
             try
             {
                 products = _context.Products
@@ -62,14 +69,16 @@ namespace eCommerceClassLibrary
                             .ToList();
             } catch (Exception ex)
             {
+                message = ex.Message;
                 products = null;
             }
-            return products;
+            return (products, message);
         }
 
-        public List<Products> ViewAllProducts()
+        public (List<Products>, string) ViewAllProducts()
         {
             List<Products> products = null;
+            string message = "";
             try
             {
                 products = _context.Products
@@ -78,13 +87,15 @@ namespace eCommerceClassLibrary
             catch (Exception ex)
             {
                 products = null;
+                message = ex.Message;
             }
-            return products;
+            return (products, message);
         }
 
-        public int EditProduct(Products newProduct)
+        public (int, string) EditProduct(Products newProduct)
         {
             int value = 0;
+            string message = "";
             try
             {
                 Products products = _context.Products.Find(newProduct.Sku);
@@ -114,18 +125,20 @@ namespace eCommerceClassLibrary
                 else
                 {
                     value = -1;
+                    message = "Edited product was not saved properly.";
                 }
             } catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                message = ex.Message;
                 value = -99;
             }
-            return value;
+            return (value, message);
         }
 
-        public int DeleteProduct(string Sku)
+        public (int, string) DeleteProduct(string Sku)
         {
             int value = 0;
+            string message = "";
             try
             {
                 Products product = _context.Products.Find(Sku);
@@ -137,13 +150,14 @@ namespace eCommerceClassLibrary
                 } else
                 {
                     value = -1;
+                    message = "Product was not deleted.";
                 }
             } catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                message = ex.Message;
                 value = -99;
             }
-            return value;
+            return (value, message);
         } 
 
         //public int AddCategory(string categoryName)
@@ -169,14 +183,15 @@ namespace eCommerceClassLibrary
         //    return value;
         //}
 
-        public int AddCategory(Categories category)
+        public (int, string) AddCategory(Categories category)
         {
             int value = 0;
+            string message = "";
             try
             {
                 if (_context.Categories.Find(category.CategoryId) != null)
                 {
-                    return 2;
+                    return (2, "There is already a Category with that Id");
                 }
                 _context.Categories.Add(category);
                 _context.SaveChanges();
@@ -187,18 +202,23 @@ namespace eCommerceClassLibrary
                 else
                 {
                     value = -1;
+                    message = "Category was not added successfully.";
                 }
             }
             catch (Exception ex)
             {
                 value = -99;
+                message = ex.Message;
+                //message = ex.ToString();
+                
             }
-            return value;
+            return (value, message);
         }
 
-        public int GetNextCategoryId()
+        public (int, string) GetNextCategoryId()
         {
             int value = 0;
+            string message = "";
             try
             {
                 value = _context.Categories.OrderByDescending(x => x.CategoryId).First().CategoryId + 1;
@@ -206,13 +226,15 @@ namespace eCommerceClassLibrary
             catch (Exception ex)
             {
                 value = -99;
+                message = ex.Message;
             }
-            return value;
+            return (value, message);
         }
 
-        public int RenameCategory(int categoryId, string categoryName)
+        public (int, string) RenameCategory(int categoryId, string categoryName)
         {
             int value = 0;
+            string message = "";
             try
             {
                 Categories category = new Categories();
@@ -227,18 +249,21 @@ namespace eCommerceClassLibrary
                 else
                 {
                     value = -1;
+                    message = "Category Name was not saved properly.";
                 }
             }
             catch (Exception ex)
             {
                 value = -99;
+                message = ex.Message;
             }
-            return value;
+            return (value, message);
         }
 
-        public int DeleteCategory(int categoryId)
+        public (int,string) DeleteCategory(int categoryId)
         {
             int value = 0;
+            string message = "";
             try
             {
                 Categories category = new Categories();
@@ -252,40 +277,48 @@ namespace eCommerceClassLibrary
                 else
                 {
                     value = -1;
+                    message = "Category was not deleted.";
                 }
             }
             catch (Exception ex)
             {
                 value = -99;
+                message = ex.Message;
             }
-            return value;
+            return (value, message);
         }
 
-        public int ValidateCredentials(string username, string password)
+        public (int, string, int) ValidateCredentials(string username, string password)
         {
             int value = 0;
+            string message = "";
+            int access = -1;
             try
             {
                 Users user = _context.Users.Find(username);
                 if (user != null && user.Password.Equals(password))
                 {
                     value = 1;
+                    access = user.Access;
                 }
                 else
                 {
                     value = -1;
+                    message = "Login credentials do not match.";
                 }
             }
             catch (Exception ex)
             {
                 value = -99;
+                message = ex.Message;
             }
-            return value;
+            return (value, message, access);
         }
 
-        public Categories FindCategory(int categoryId)
+        public (Categories, string) FindCategory(int categoryId)
         {
             Categories category = null;
+            string message = "";
             try
             {
                 category = _context.Categories.Find(categoryId);
@@ -293,8 +326,9 @@ namespace eCommerceClassLibrary
             catch (Exception ex)
             {
                 category = null;
+                message = ex.Message;
             }
-            return category;
+            return (category, message);
         }
 
         //public int DummyMethod(string variable)

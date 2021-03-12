@@ -8,6 +8,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using System.Security.Claims;
 
 namespace eCommerceMVC.Controllers
 {
@@ -29,14 +31,24 @@ namespace eCommerceMVC.Controllers
 
         public IActionResult HomePage()
         {
+            if (Request.Cookies["Access"] != "1")
+            {
+                return RedirectToAction("Login", "Home");
+            }
             return View();
         }
 
         public IActionResult Categories()
         {
+            if (Request.Cookies["Access"] != "1")
+            {
+                return RedirectToAction("Login", "Home");
+            }
             Response.Cookies.Append("BackLink", "Categories", option);
 
-            List<eCommerceClassLibrary.Models.Categories> categories = _repository.ViewCategories();
+            var result = _repository.ViewCategories();
+            List<eCommerceClassLibrary.Models.Categories> categories = result.Item1;
+            ViewBag.Message = result.Item2;
             List<Categories> mvcCategories = new List<Categories>();
             Categories mvcCategory = new Categories();
             foreach (eCommerceClassLibrary.Models.Categories category in categories)
@@ -49,9 +61,15 @@ namespace eCommerceMVC.Controllers
 
         public IActionResult Products()
         {
+            if (Request.Cookies["Access"] != "1")
+            {
+                return RedirectToAction("Login", "Home");
+            }
             Response.Cookies.Append("BackLink", "Products", option);
 
-            List<eCommerceClassLibrary.Models.Products> products = _repository.ViewAllProducts();
+            var result = _repository.ViewAllProducts();
+            List<eCommerceClassLibrary.Models.Products> products = result.Item1;
+            ViewBag.Message = result.Item2;
             List<Products> modelProducts = new List<Products>();
             Products product = new Products();
             foreach (var prod in products)
@@ -64,14 +82,26 @@ namespace eCommerceMVC.Controllers
 
         public IActionResult AddCategory()
         {
-            ViewBag.NextCategoryId = _repository.GetNextCategoryId();
+            if (Request.Cookies["Access"] != "1")
+            {
+                return RedirectToAction("Login", "Home");
+            }
+            var tuple = _repository.GetNextCategoryId();
+            ViewBag.NextCategoryId = tuple.Item1;
+            ViewBag.Message = tuple.Item2;
             return View();
         }
         public IActionResult SaveAddedCategory(Models.Categories category)
         {
+            if (Request.Cookies["Access"] != "1")
+            {
+                return RedirectToAction("Login", "Home");
+            }
             eCommerceClassLibrary.Models.Categories entityCategory;
             entityCategory = _mapper.Map<eCommerceClassLibrary.Models.Categories>(category);
-            int value = _repository.AddCategory(entityCategory);
+            var tuple = _repository.AddCategory(entityCategory);
+            var value = tuple.Item1;
+            ViewBag.Message = tuple.Item2;
             switch (value)
             {
                 case 1: return View("Success");
@@ -84,14 +114,24 @@ namespace eCommerceMVC.Controllers
 
         public IActionResult RenameCategory(Models.Categories category)
         {
+            if (Request.Cookies["Access"] != "1")
+            {
+                return RedirectToAction("Login", "Home");
+            }
             return View(category);
         }
 
         public IActionResult SaveRenamedCategory(Models.Categories category)
         {
+            if (Request.Cookies["Access"] != "1")
+            {
+                return RedirectToAction("Login", "Home");
+            }
             //eCommerceClassLibrary.Models.Categories entityCategory;
             //entityCategory = _mapper.Map<eCommerceClassLibrary.Models.Categories>(category);
-            int value = _repository.RenameCategory(category.CategoryId, category.Name);
+            var tuple = _repository.RenameCategory(category.CategoryId, category.Name);
+            int value = tuple.Item1;
+            ViewBag.Message = tuple.Item2;
             switch (value)
             {
                 case 1: return View("Success");
@@ -104,12 +144,22 @@ namespace eCommerceMVC.Controllers
 
         public IActionResult DeleteCategory(Models.Categories category)
         {
+            if (Request.Cookies["Access"] != "1")
+            {
+                return RedirectToAction("Login", "Home");
+            }
             return View(category);
         }
 
         public IActionResult SaveDeletedCategory(Models.Categories category)
         {
-            int value = _repository.DeleteCategory(category.CategoryId);
+            if (Request.Cookies["Access"] != "1")
+            {
+                return RedirectToAction("Login", "Home");
+            }
+            var tuple = _repository.DeleteCategory(category.CategoryId);
+            int value = tuple.Item1;
+            ViewBag.Message = tuple.Item2;
             switch (value)
             {
                 case 1: return View("Success");
@@ -122,10 +172,16 @@ namespace eCommerceMVC.Controllers
 
         public IActionResult ViewProductsInCategory(Models.Categories category)
         {
+            if (Request.Cookies["Access"] != "1")
+            {
+                return RedirectToAction("Login", "Home");
+            }
             Response.Cookies.Append("BackLink", "SpecificCategory", option);
 
             eCommerceClassLibrary.Models.Categories entityCategory = _mapper.Map<eCommerceClassLibrary.Models.Categories>(category);
-            List<eCommerceClassLibrary.Models.Products> entityProducts = _repository.ViewProductsInCategory(entityCategory);
+            var result = _repository.ViewProductsInCategory(entityCategory);
+            List<eCommerceClassLibrary.Models.Products> entityProducts = result.Item1;
+            ViewBag.Message = result.Item2;
             List<Models.Products> modelProducts = new List<Models.Products>();
             Models.Products modelProduct = null;
             foreach (var product in entityProducts)
@@ -148,17 +204,32 @@ namespace eCommerceMVC.Controllers
 
         public IActionResult AddProduct(int categoryId)
         {
-            eCommerceClassLibrary.Models.Categories category = _repository.FindCategory(categoryId);
+            if (Request.Cookies["Access"] != "1")
+            {
+                return RedirectToAction("Login", "Home");
+            }
+            var tuple = _repository.FindCategory(categoryId);
+            eCommerceClassLibrary.Models.Categories category = tuple.Item1;
+            ViewBag.Message = tuple.Item2;
+
             return View();
         }
 
         public IActionResult AddProductAlone()
         {
+            if (Request.Cookies["Access"] != "1")
+            {
+                return RedirectToAction("Login", "Home");
+            }
             return View();
         }
 
         public IActionResult SaveAddedProduct(/*IFormCollection frm*/Models.Products products)
         {
+            if (Request.Cookies["Access"] != "1")
+            {
+                return RedirectToAction("Login", "Home");
+            }
             Products product = new Products();
             //product.SKU = frm["SKU"];
             //product.Name = frm["Name"];
@@ -166,7 +237,9 @@ namespace eCommerceMVC.Controllers
             //product.CategoryId = Convert.ToInt32(frm["CategoryId"]);
             eCommerceClassLibrary.Models.Products entityProduct = new eCommerceClassLibrary.Models.Products();
             entityProduct = _mapper.Map<eCommerceClassLibrary.Models.Products>(products);
-            int value = _repository.AddProduct(entityProduct);
+            var result = _repository.AddProduct(entityProduct);
+            int value = result.Item1;
+            ViewBag.Message = result.Item2;
             switch (value)
             {
                 case 1: return View("Success");
@@ -179,20 +252,33 @@ namespace eCommerceMVC.Controllers
 
         public IActionResult DuplicateProduct(Models.Products product)
         {
-            
+            if (Request.Cookies["Access"] != "1")
+            {
+                return RedirectToAction("Login", "Home");
+            }
             return View(product);
         }
 
         public IActionResult EditProduct(Models.Products product)
         {
+            if (Request.Cookies["Access"] != "1")
+            {
+                return RedirectToAction("Login", "Home");
+            }
             return View(product);
         }
 
 
         public IActionResult SaveEditedProduct(Models.Products product)
         {
+            if (Request.Cookies["Access"] != "1")
+            {
+                return RedirectToAction("Login", "Home");
+            }
             eCommerceClassLibrary.Models.Products entityProduct = _mapper.Map<eCommerceClassLibrary.Models.Products>(product);
-            int value = _repository.EditProduct(entityProduct);
+            var tuple = _repository.EditProduct(entityProduct);
+            int value = tuple.Item1;
+            ViewBag.Message = tuple.Item2;
             switch (value)
             {
                 case 1: return View("Success");
@@ -204,12 +290,22 @@ namespace eCommerceMVC.Controllers
         }
         public IActionResult DeleteProduct(Models.Products product)
         {
+            if (Request.Cookies["Access"] != "1")
+            {
+                return RedirectToAction("Login", "Home");
+            }
             return View(product);
         }
 
         public IActionResult SaveDeletedProduct(Models.Products product)
         {
-            int value = _repository.DeleteProduct(product.SKU);
+            if (Request.Cookies["Access"] != "1")
+            {
+                return RedirectToAction("Login", "Home");
+            }
+            var tuple = _repository.DeleteProduct(product.SKU);
+            int value = tuple.Item1;
+            ViewBag.Message = tuple.Item2;
             switch (value)
             {
                 case 1: return View("Success");
@@ -220,10 +316,28 @@ namespace eCommerceMVC.Controllers
             }
         }
 
-        //public IActionResult DetailsProduct(Models.Products product)
+        public IActionResult LogOut()
+        {
+            if (Request.Cookies["Access"] != "1")
+            {
+                return RedirectToAction("Login", "Home");
+            }
+            return View();
+        }
+
+        //public async Task<IActionResult> SignInUser(Models.LoginModel user)
         //{
-        //    return View(product);
+        //    var claims = new List<Claim>
+        //    {   
+        //        new Claim(ClaimTypes.NameIdentifier, user.UserID),
+        //        new Claim(ClaimTypes.Email, user.UserID)
+        //    };
+        //    var identity = new ClaimsIdentity(claims);
+        //    var principal = new ClaimsPrincipal(identity);
+        //    await HttpContext.SignInAsync(principal);
+        //    return RedirectToAction(“Index”, “Home”);
         //}
 
     }
+
 }
