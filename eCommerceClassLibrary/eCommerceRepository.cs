@@ -388,17 +388,20 @@ namespace eCommerceClassLibrary
             return (value, message, imgData);
         }
 
-        public int FindImageId(string SKU)
+        public int[] FindImageIds(string SKU)
         {
-            int value = -1;
+            int[] value = new int[10];
             string message = "";
             try
             {
                 List<Images> images = _context.Images.Where(x => x.Sku == SKU).ToList();
-                value = images[0].ImageId;
+                for (int i = 0; i < images.Count; i++)
+                {
+                    value[i] = images[i].ImageId;
+                }
             } catch (Exception ex)
             {
-                value = -99;
+                value = null;
                 message = ex.Message;
             }
             return value;

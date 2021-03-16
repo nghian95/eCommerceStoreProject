@@ -8,7 +8,6 @@
 
     - Create Product Landing page 
         - Be able to upload images as admin
-        - See multiple images of the same product
     - Explore dropdown menus (i.e. for CategoryId when adding product)
     - Create Pages
     - Create sessions that store user info.
@@ -17,11 +16,14 @@
     - Set up Data Annotations for min/max string length, type, etc. for models
     - Hide empty fields in DeleteProduct
     - Logout
+    - Users can leave reviews
+    - Coupon / News Banner at top
+    - newsletter sign up for customer / new unregistered user
 *OPTIONAL*
 
     - Redirect from Success/Failure after 5 seconds.
     - Cookie-based Authentication / Identity-based Authentication
-
+    - Different themes admin can choose from
 **#DOUBLECHECK#**
     How to pass properties into Action Methods (do we need asp-route-id or the parameter Models.Products or do we need IFormCollection frm)
 

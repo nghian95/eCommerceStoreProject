@@ -340,10 +340,17 @@ namespace eCommerceMVC.Controllers
         public IActionResult ViewProductLanding(Models.Products product)
         {
             TempData["Name"] = product.Name;
-            var tuple = _repository.ShowImages(product.SKU);
-            int id = _repository.FindImageId(product.SKU);
-            ViewData["ImageID"] = id;
-            var image = _repository.ShowSingleImage(id);
+            //var tuple = _repository.ShowImages(product.SKU);
+            int[] ids = _repository.FindImageIds(product.SKU);
+            int num = 0;
+            foreach (var id in ids)
+            {
+                ViewData["ImageID" + num] = id;
+                num++;
+            }
+            ViewData["Count"] = ids.Count(s => s!=0)-1;
+            //ViewData["ImageID"] = id;
+            //var image = _repository.ShowSingleImage(id);
             return View(product);
         }
 
