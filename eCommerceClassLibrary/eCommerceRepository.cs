@@ -407,6 +407,32 @@ namespace eCommerceClassLibrary
             return value;
         }
 
+        public (int, string) UploadImage(Images image)
+        {
+            int value = 0;
+            string message = "";
+            try
+            {
+                _context.Images.Add(image);
+                _context.SaveChanges();
+                if (_context.Images.Find(image.ImageId) != null)
+                {
+                    value = 1;
+                }
+                else
+                {
+                    value = -1;
+                    message = "Image was not found in database.";
+                }
+            }
+            catch (Exception ex)
+            {
+                value = -99;
+                message = ex.Message;
+            }
+            return (value, message);
+        }
+
         //public int DummyMethod(string variable)
         //{
         //    int value = 0;

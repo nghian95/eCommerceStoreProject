@@ -97,6 +97,7 @@
                 </td>
                 <td>
                     @*@Html.ActionLink("Edit", "EditProduct", item) |*@
+                    @Html.ActionLink("View", "ViewProductLanding", item) |
                     @Html.ActionLink("Edit", "EditProduct", new { SKU = item.SKU, Name = item.Name, Quantity = item.Quantity, Description = item.Description, Price = item.Price, CategoryId = item.CategoryId, Sale = item.Sale }) |
                     @Html.ActionLink("Duplicate", "DuplicateProduct", item) |
                     @Html.ActionLink("Delete", "DeleteProduct", item)

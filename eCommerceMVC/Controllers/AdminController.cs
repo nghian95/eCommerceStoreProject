@@ -339,7 +339,9 @@ namespace eCommerceMVC.Controllers
 
         public IActionResult ViewProductLanding(Models.Products product)
         {
+            Response.Cookies.Append("BackLink", "ViewProductLanding", option);
             TempData["Name"] = product.Name;
+            TempData["Sku"] = product.SKU;
             //var tuple = _repository.ShowImages(product.SKU);
             int[] ids = _repository.FindImageIds(product.SKU);
             int num = 0;
@@ -348,7 +350,8 @@ namespace eCommerceMVC.Controllers
                 ViewData["ImageID" + num] = id;
                 num++;
             }
-            ViewData["Count"] = ids.Count(s => s!=0)-1;
+            Response.Cookies.Append("Count", (ids.Count(s => s != 0) - 1).ToString(), option);
+            //TempData["Count"] = ids.Count(s => s != 0) - 1;
             //ViewData["ImageID"] = id;
             //var image = _repository.ShowSingleImage(id);
             return View(product);

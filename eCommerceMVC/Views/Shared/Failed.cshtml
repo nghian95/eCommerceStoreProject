@@ -21,6 +21,9 @@
         case "Categories":
             <a asp-action="Categories">Back to List</a>
             break;
+        case "ViewProductLanding":
+            <a asp-action="ViewProductLanding" asp-route-Sku=@TempData["Sku"]>Back to List</a>
+            break;
         default:
             <a asp-action="Categories">Back to List</a>
             break;

@@ -1,8 +1,14 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Extensions.Configuration;
+//using System.Web.Mvc;
 
 namespace eCommerceMVC.Models
 {
@@ -29,5 +35,6 @@ namespace eCommerceMVC.Models
         //        this.Description.Equals(product.Description) && this.Price.Equals(product.Price) && this.CategoryId.Equals(product.CategoryId) &&
         //        this.Sale.Equals(product.Sale) && this.Category.Equals(product.Category));
         //}
+
     }
 }
