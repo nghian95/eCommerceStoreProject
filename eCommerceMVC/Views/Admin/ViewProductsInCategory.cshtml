@@ -43,66 +43,42 @@
 <p>
     <a asp-action="AddProduct" asp-route-categoryId=@cookieCategoryId>Add @category</a>
 </p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.SKU)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Quantity)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Price)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CategoryId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Sale)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
+<div>
+    @{int num = 0; }
+    @foreach (var item in Model)
+    {
+        var name = "Image" + num;
+        num++;
+        
+        if (@ViewData[name] != null)
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.SKU)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Quantity)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Description)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Price)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.CategoryId)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Sale)
-                </td>
-                <td>
-                    @*@Html.ActionLink("Edit", "EditProduct", item) |*@
-                    @Html.ActionLink("View", "ViewProductLanding", item) |
-                    @Html.ActionLink("Edit", "EditProduct", new { SKU = item.SKU, Name = item.Name, Quantity = item.Quantity, Description = item.Description, Price = item.Price, CategoryId = item.CategoryId, Sale = item.Sale }) |
-                    @Html.ActionLink("Duplicate", "DuplicateProduct", item) |
-                    @Html.ActionLink("Delete", "DeleteProduct", item)
-                </td>
-            </tr>
+            <div>
+                <img class="w-25" src="@Url.Action("show", "image", new { id = (int)@ViewData[name] })" alt="Product's Picture">
+            </div>
         }
-    </tbody>
-</table>
+        
+
+        <div>
+            @Html.DisplayNameFor(model => model.SKU):
+            @Html.DisplayFor(modelItem => item.SKU)
+        </div>
+        <div>
+            @Html.DisplayNameFor(model => model.Name):
+            @Html.DisplayFor(modelItem => item.Name)
+        </div>
+        <div>
+            @Html.DisplayNameFor(model => model.Quantity):
+            @Html.DisplayFor(modelItem => item.Quantity)
+        </div>
+        <div>
+            @Html.DisplayNameFor(model => model.Price):
+            @Html.DisplayFor(modelItem => item.Price)
+        </div>
+        <div>
+            @Html.ActionLink("View", "ViewProductLanding", item) |
+            @Html.ActionLink("Edit", "EditProduct", new { SKU = item.SKU, Name = item.Name, Quantity = item.Quantity, Description = item.Description, Price = item.Price, CategoryId = item.CategoryId, Sale = item.Sale }) |
+            @Html.ActionLink("Duplicate", "DuplicateProduct", item) |
+            @Html.ActionLink("Delete", "DeleteProduct", item)
+        </div>
+    }
+</div>

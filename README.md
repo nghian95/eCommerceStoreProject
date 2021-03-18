@@ -6,11 +6,10 @@
 
 *IMPORTANT*
 
-    - Categories Pages show thumbnails/photos of products
     - Add to Cart functionality
     - Discount price vs Total Price visible
     - Upload images for products
-    - Admin page of Product Landing should have delete images, rearrange images, delete product, duplicate product.
+    - Admin page of Product Landing should have rearrange images, delete product, duplicate product.
     - Explore dropdown menus (i.e. for CategoryId when adding product)
     - Create Pages
     - Create sessions that store user info.
@@ -22,10 +21,14 @@
     - Users can leave reviews
     - Coupon / News Banner at top
     - newsletter sign up for customer / new unregistered user
+    - Wishlist
+    - Table of Past Transactions
+    - Account History / Order History
 
 *BUGS*
     - With 10 images, sometimes the product landing page doesn't load the ImageIds fast enough for the page and causes an error
-    - When you add an image, then go back to list (product landing page) the new image is not yet there, page has to be refreshed first. 
+    - Name for Categories is one step behind. 
+
 *OPTIONAL*
 
     - Redirect from Success/Failure after 5 seconds.

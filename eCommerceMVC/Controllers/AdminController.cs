@@ -10,6 +10,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Security.Claims;
+using System.IO;
 
 namespace eCommerceMVC.Controllers
 {
@@ -177,10 +178,23 @@ namespace eCommerceMVC.Controllers
             }
             Response.Cookies.Append("BackLink", "SpecificCategory", option);
 
+            var tuple = _repository.FindImageIdsForCategory(category.CategoryId);
+            List<int> imageIds = tuple.Item1;
+            if (imageIds != null)
+            {
+                int num = 0;
+                foreach (var id in tuple.Item1)
+                {
+                    ViewData["Image" + num] = id;
+                    num++;
+                }
+            }
+            ViewBag.Message = tuple.Item2;
+
             eCommerceClassLibrary.Models.Categories entityCategory = _mapper.Map<eCommerceClassLibrary.Models.Categories>(category);
             var result = _repository.ViewProductsInCategory(entityCategory);
             List<eCommerceClassLibrary.Models.Products> entityProducts = result.Item1;
-            ViewBag.Message = result.Item2;
+            ViewBag.Message += result.Item2;
             List<Models.Products> modelProducts = new List<Models.Products>();
             Models.Products modelProduct = null;
             foreach (var product in entityProducts)
@@ -340,21 +354,82 @@ namespace eCommerceMVC.Controllers
         public IActionResult ViewProductLanding(Models.Products product)
         {
             Response.Cookies.Append("BackLink", "ViewProductLanding", option);
+            if (product.Name == null)
+            {
+                product = _mapper.Map<Products>(_repository._context.Products.Find(product.SKU));
+            }
             TempData["Name"] = product.Name;
             TempData["Sku"] = product.SKU;
             //var tuple = _repository.ShowImages(product.SKU);
-            int[] ids = _repository.FindImageIds(product.SKU);
+            var tuple = _repository.FindImageIds(product.SKU);
+            int[] ids = tuple.Item1;
+            ViewBag.Message = tuple.Item2;
+            int count = (ids.Count(s => s != 0) - 1);
+            Response.Cookies.Append("Count", count.ToString(), option);
+            for (int num = 0; num <= count; num++)
+            {
+                ViewData["ImageID" + num] = ids[num];
+            }
+            //TempData["Count"] = ids.Count(s => s != 0) - 1;
+            //ViewData["ImageID"] = id;
+            //var image = _repository.ShowSingleImage(id);
+            return View(product);
+        }
+
+        //public IActionResult ViewProductLandingAfterBackToList(String Sku)
+        //{
+        //    eCommerceClassLibrary.Models.Products product = _repository._context.Products.Find(Sku);
+        //    Products modelProduct = _mapper.Map<Products>(product);
+        //    Response.Cookies.Append("BackLink", "ViewProductLanding", option);
+        //    TempData["Name"] = modelProduct.Name;
+        //    TempData["Sku"] = modelProduct.SKU;
+        //    //var tuple = _repository.ShowImages(product.SKU);
+        //    var tuple = _repository.FindImageIds(modelProduct.SKU);
+        //    int[] ids = tuple.Item1;
+        //    ViewBag.Message = tuple.Item2;
+        //    int num = 0;
+        //    foreach (var id in ids)
+        //    {
+        //        ViewData["ImageID" + num] = id;
+        //        num++;
+        //    }
+        //    Response.Cookies.Append("Count", (ids.Count(s => s != 0) - 1).ToString(), option);
+        //    //TempData["Count"] = ids.Count(s => s != 0) - 1;
+        //    //ViewData["ImageID"] = id;
+        //    //var image = _repository.ShowSingleImage(id);
+        //    return View("ViewProductLanding");
+        //}
+
+        public IActionResult DeleteImage(Models.Products product)
+        {
+            var tuple = _repository.FindImageIds(product.SKU);
+            int[] ids = tuple.Item1;
             int num = 0;
+            TempData["Product"] = product.SKU;
             foreach (var id in ids)
             {
                 ViewData["ImageID" + num] = id;
                 num++;
             }
-            Response.Cookies.Append("Count", (ids.Count(s => s != 0) - 1).ToString(), option);
-            //TempData["Count"] = ids.Count(s => s != 0) - 1;
-            //ViewData["ImageID"] = id;
-            //var image = _repository.ShowSingleImage(id);
-            return View(product);
+            return View();
+        }
+
+        public IActionResult ConfirmDeletedImage(int id)
+        {
+            var tuple = _repository.DeleteImage(id);
+            int value = tuple.Item1;
+            ViewBag.Message = tuple.Item2;
+
+            var tuple2 = _repository.FindImageIds((string)TempData["Product"]);
+            int[] ids = tuple2.Item1;
+
+            switch (value)
+            {
+                case 1:
+                    Response.Cookies.Append("Count", (ids.Count(s => s != 0) - 1).ToString(), option);
+                    return View("Success");
+                default: return View("Failed");
+            }
         }
 
     }

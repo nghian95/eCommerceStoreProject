@@ -388,7 +388,7 @@ namespace eCommerceClassLibrary
             return (value, message, imgData);
         }
 
-        public int[] FindImageIds(string SKU)
+        public (int[], string) FindImageIds(string SKU)
         {
             int[] value = new int[10];
             string message = "";
@@ -404,7 +404,27 @@ namespace eCommerceClassLibrary
                 value = null;
                 message = ex.Message;
             }
-            return value;
+            return (value, message);
+        }
+
+        public (List<int>,string) FindImageIdsForCategory(int categoryId)
+        {
+            List<int> imageIds = new List<int>();
+            string message = "";
+            try
+            {
+                List<string> skus = _context.Products.Where(x => x.CategoryId == categoryId).Select(x => x.Sku).ToList();
+                foreach (string sku in skus)
+                {
+                    imageIds.Add(_context.Images.Where(x => x.Sku == sku).Select(x => x.ImageId).First());
+                }
+            }
+            catch (Exception ex)
+            {
+                imageIds = null;
+                message = ex.Message;
+            }
+            return (imageIds, message);
         }
 
         public (int, string) UploadImage(Images image)
@@ -423,6 +443,33 @@ namespace eCommerceClassLibrary
                 {
                     value = -1;
                     message = "Image was not found in database.";
+                }
+            }
+            catch (Exception ex)
+            {
+                value = -99;
+                message = ex.Message;
+            }
+            return (value, message);
+        }
+
+        public (int, string) DeleteImage(int id)
+        {
+            int value = 0;
+            string message = "";
+            try
+            {
+                Images image = _context.Images.Find(id);
+                _context.Images.Remove(image);
+                _context.SaveChanges();
+                if (_context.Images.Find(id) == null)
+                {
+                    value = 1;
+                }
+                else
+                {
+                    value = -1;
+                    message = "Image was not deleted.";
                 }
             }
             catch (Exception ex)

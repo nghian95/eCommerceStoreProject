@@ -16,6 +16,8 @@ namespace eCommerceMVC.Controllers
     {
         private readonly eCommerceRepository _repository;
         private readonly IMapper _mapper;
+        private CookieOptions option = new CookieOptions();
+
 
         public ImageController(eCommerceRepository repository, IMapper mapper)
         {
@@ -74,6 +76,12 @@ namespace eCommerceMVC.Controllers
                         objfiles.ImageFile = target.ToArray();
                     }
                     tuple = _repository.UploadImage(objfiles);
+
+                    var tuple2 = _repository.FindImageIds((string)TempData["Sku"]);
+                    int[] ids = tuple2.Item1;
+                    ViewBag.Message = tuple2.Item2;
+                    int count = (ids.Count(s => s != 0) - 1);
+                    Response.Cookies.Append("Count", count.ToString(), option);
                 }
 
             }
@@ -102,5 +110,7 @@ namespace eCommerceMVC.Controllers
         {
             return RedirectToAction("Categories", "Admin");
         }
+
+
     }
 }

@@ -1,0 +1,52 @@
+﻿@inject Microsoft.AspNetCore.Http.IHttpContextAccessor httpContextAccessor
+@model eCommerceMVC.Models.Products
+
+@{
+    ViewData["Title"] = "DeleteImage";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    var cookieCategory = httpContextAccessor.HttpContext.Request.Cookies["Category"];
+    var cookieCategoryId = httpContextAccessor.HttpContext.Request.Cookies["CategoryId"];
+    int count = Convert.ToInt32(httpContextAccessor.HttpContext.Request.Cookies["Count"]);
+}
+
+@*<h3>Are you sure you want to delete this image?</h3>*@
+<div class="container">
+    <div class="row">
+        @{
+            for (int i = 0; i <= count; i++)
+            {
+                var name = "ImageID" + i;
+                <div class="col-md-3">
+                    <img class="d-block w-100" src="@Url.Action("show", "image", new { id = (int)@ViewData[name] })" alt="Product's Picture">
+                    <div style="text-align:center">
+                        @Html.ActionLink("Delete Image", "ConfirmDeletedImage", new { id = (int)@ViewData[name] })
+                    </div>
+                </div>
+
+            }
+        }
+    </div>
+</div>
+<br />
+<div>
+    @{
+        switch (httpContextAccessor.HttpContext.Request.Cookies["BackLink"])
+        {
+            case "Products":
+                <a asp-action="Products">Back to List</a>
+                break;
+            case "SpecificCategory":
+                <a asp-action="ViewProductsInCategory" asp-route-categoryId="@cookieCategoryId" asp-route-Name="@cookieCategory">Back to List</a>
+                break;
+            case "Categories":
+                <a asp-action="Categories">Back to List</a>
+                break;
+            case "ViewProductLanding":
+                <a asp-action="ViewProductLanding" asp-route-Sku=@TempData["Sku"]>Back to List</a>
+                break;
+            default:
+                <a asp-action="Categories">Back to List</a>
+                break;
+        }
+    }
+</div>
