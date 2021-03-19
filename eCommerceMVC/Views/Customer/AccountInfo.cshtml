@@ -1,0 +1,61 @@
+﻿@inject Microsoft.AspNetCore.Http.IHttpContextAccessor httpContextAccessor;
+@model eCommerceMVC.Models.Users
+
+@{
+    ViewData["Title"] = "AccountInfo";
+    Layout = "~/Views/Shared/_LayoutCustomer.cshtml";
+
+    if (@Model.FirstName != null && @Model.FirstName != "")
+    {
+        <h2>Account Info: @Model.FirstName @Model.LastName</h2>
+    } else
+    {
+        <h2>Account Info: @Model.UserName</h2>
+    }
+}
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.UserName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.UserName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Password)
+        </dt>
+        <dd>
+            **********
+        </dd>
+        <dt>
+            Name
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.FirstName) 
+            @Html.DisplayFor(model => model.LastName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Address)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Address)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Phone)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Phone)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Email)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Email)
+        </dd>
+    </dl>
+</div>
+<div>
+    @Html.ActionLink("Edit Info", "Edit", Model) |
+    @Html.ActionLink("Change Password", "ChangePassword", Model)
+</div>

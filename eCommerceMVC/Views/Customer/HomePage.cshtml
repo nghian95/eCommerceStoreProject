@@ -1,0 +1,13 @@
+﻿@inject Microsoft.AspNetCore.Http.IHttpContextAccessor httpContextAccessor; 
+
+@{
+    ViewData["Title"] = "Home Page";
+    Layout = "~/Views/Shared/_LayoutCustomer.cshtml";
+    string name = httpContextAccessor.HttpContext.Request.Cookies["Name"];
+}
+
+<div class="text-center">
+    <h1 class="display-4" style="font-weight:400">Welcome back, @name</h1>
+    <br />
+    <img class="img-fluid"src="~/images/menfashionbg1.jpg" style="width:1024px"/>
+</div>

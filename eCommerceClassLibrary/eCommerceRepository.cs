@@ -480,25 +480,112 @@ namespace eCommerceClassLibrary
             return (value, message);
         }
 
-        //public int DummyMethod(string variable)
+        public (Users, string) FindUser(string userName)
+        {
+            string message = "";
+            Users user = null;
+            try
+            {
+                 user = _context.Users.Find(userName);
+                if (user.UserName == userName)
+                {
+                    message = "User found successfully.";
+                } else
+                {
+                    message = "User not found.";
+                }
+            }
+            catch (Exception ex)
+            {
+                user = null;
+                message = ex.Message;
+            }
+            return (user, message);
+        }
+
+        public (int, string) EditUser(Users user)
+        {
+            int value = 0;
+            string message = "";
+            try
+            {
+                Users entUser = _context.Users.Find(user.UserName);
+                entUser.Address = user.Address;
+                entUser.FirstName = user.FirstName;
+                entUser.LastName = user.LastName;
+                entUser.Phone = user.Phone;
+                entUser.Email = user.Email;
+                _context.Update(entUser);
+                _context.SaveChanges();
+                entUser = _context.Users.Find(user.UserName);
+                if (entUser.FirstName == user.FirstName && entUser.LastName == user.LastName && entUser.Address == user.Address && entUser.Phone == user.Phone && entUser.Email == user.Email)
+                {
+                    value = 1;
+                }
+                else
+                {
+                    value = -1;
+                    message = "Failed to Edit User";
+                }
+            }
+            catch (Exception ex)
+            {
+                value = -99;
+                message = ex.Message;
+            }
+            return (value, message);
+        }
+
+        public (int, string) ChangePassword(Users user)
+        {
+            int value = 0;
+            string message = "";
+            try
+            {
+                Users actualUser = _context.Users.Find(user.UserName);
+                actualUser.Password = user.Password;
+                _context.Update(actualUser);
+                _context.SaveChanges();
+                if (_context.Users.Find(user.UserName).Password == user.Password)
+                {
+                    value = 1;
+                }
+                else
+                {
+                    value = -1;
+                    message = "Failed to change password.";
+                }
+            }
+            catch (Exception ex)
+            {
+                value = -99;
+                message = ex.Message;
+            }
+            return (value, message);
+        }
+
+        //public (int, string) DummyMethod(string variable)
         //{
         //    int value = 0;
+        //    string message = "";
         //    try
         //    {
-        //        if (true)
+        //        if (_context.)
         //        {
         //            value = 1;
         //        }
         //        else
         //        {
         //            value = -1;
+        //            message = "Failed";
         //        }
         //    }
         //    catch (Exception ex)
         //    {
         //        value = -99;
+        //        message = ex.Message;
         //    }
-        //    return value;
+        //    return (value, message);
         //}
     }
 }

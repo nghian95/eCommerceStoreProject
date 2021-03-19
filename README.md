@@ -12,11 +12,10 @@
     - Admin page of Product Landing should have rearrange images, delete product, duplicate product.
     - Explore dropdown menus (i.e. for CategoryId when adding product)
     - Create Pages
+        - Customer Pages
     - Create sessions that store user info.
-    - Create Customer pages.
     - Differentiate no-user pages and customer pages
     - Set up Data Annotations for min/max string length, type, etc. for models
-    - Hide empty fields in DeleteProduct
     - Logout
     - Users can leave reviews
     - Coupon / News Banner at top
@@ -34,7 +33,10 @@
     - Redirect from Success/Failure after 5 seconds.
     - Cookie-based Authentication / Identity-based Authentication
     - Different themes admin can choose from
+    - Add popups instead of new pages for simple edits/views
+
 **#DOUBLECHECK#**
+
     How to pass properties into Action Methods (do we need asp-route-id or the parameter Models.Products or do we need IFormCollection frm)
 
 **#IDEAS#**

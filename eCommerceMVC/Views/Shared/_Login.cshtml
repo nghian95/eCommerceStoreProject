@@ -1,0 +1,10 @@
+﻿
+<form asp-action="CheckRole" asp-controller="Home">
+    <div class="container-fluid">
+        <h3>Login Authentication:</h3>
+        <hr/>
+        <p>Username: @Html.TextBox("username")</p>
+        <p>Password: &nbsp;  @Html.Password("password")</p>
+        <input type="submit" class="btn btn-primary" value="Submit" />
+    </div>
+</form>

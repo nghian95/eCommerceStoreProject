@@ -28,6 +28,7 @@ namespace eCommerceMVC.Controllers
         public IActionResult HomePage()
         {
             CookieOptions option = new CookieOptions();
+            Response.Cookies.Append("ChangePassword", "false", option);
             Response.Cookies.Append("Access", "" + -1, option);
             return View();
         }
@@ -55,12 +56,36 @@ namespace eCommerceMVC.Controllers
             var tuple = _repository.ValidateCredentials(userName, password);
             int value = tuple.Item1;
             ViewBag.Message = tuple.Item2;
+            var tuple2 = _repository.FindUser(userName);
+            Users user = _mapper.Map<Users>(tuple2.Item1);
             switch (value)
             {
                 case 1:
                     CookieOptions option = new CookieOptions();
                     Response.Cookies.Append("Access", ""+tuple.Item3, option);
-                    return RedirectToAction("HomePage", "Admin");
+                    if (user.FirstName != null)
+                    {
+                        Response.Cookies.Append("Name", user.FirstName, option);
+                    } else
+                    {
+                        Response.Cookies.Append("Name", userName, option);
+                    }
+                    Response.Cookies.Append("UserName", userName, option);
+                    string pw = Request.Cookies["ChangePassword"];
+                    if (pw != "true") {
+                        if (tuple.Item3 == 1)
+                        {
+                            return RedirectToAction("HomePage", "Admin");
+                        } else
+                        {
+                            return RedirectToAction("HomePage", "Customer");
+                        }
+                    } else
+                    {
+                        Response.Cookies.Append("ChangePassword", "false", option);
+                        return RedirectToAction("ChangePassword", "Customer", user);
+                    }
+
                 case -1: return RedirectToAction("Login");
                 case -99: return RedirectToAction("Login");
                 default: return RedirectToAction("Login");

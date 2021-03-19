@@ -1,3 +1,12 @@
+CREATE TABLE [dbo].[Categories] (
+    [CategoryID] INT          IDENTITY (1, 1) NOT NULL,
+    [Name]       VARCHAR (30) NOT NULL,
+    PRIMARY KEY CLUSTERED ([CategoryID] ASC),
+    UNIQUE NONCLUSTERED ([Name] ASC),
+    UNIQUE NONCLUSTERED ([Name] ASC)
+);
+
+
 CREATE TABLE Users 
 (
 	UserName VARCHAR(20) CONSTRAINT pk_UserName PRIMARY KEY,
@@ -44,3 +53,15 @@ INSERT INTO Images (ImageName, OriginalFormat, ImageFile, SKU) SELECT
 	  ,'CotnHD01-Y'
 
 FROM OPENROWSET(BULK N'D:\Downloads\Yellow Hoodie.jpg', SINGLE_BLOB) AS ImageSource(ImageFile);
+
+CREATE TABLE Transactions 
+(
+	TransactionID INT Identity(1,1) PRIMARY KEY,
+    SKU VARCHAR(20),
+    Quantity INT,
+    TotalPrice DECIMAL (18,2),
+    TransactionGroup INT,
+    UserName VARCHAR(20),
+    FOREIGN KEY (SKU) REFERENCES dbo.Products (SKU),
+    FOREIGN KEY (UserName) REFERENCES dbo.Users (UserName)
+)

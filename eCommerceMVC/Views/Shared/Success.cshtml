@@ -12,16 +12,19 @@
     switch (httpContextAccessor.HttpContext.Request.Cookies["BackLink"])
     {
         case "Products":
-            <a asp-action="Products">Back to List</a>
+            <a asp-action="Products">Back to List of Products</a>
             break;
         case "SpecificCategory":
-            <a asp-action="ViewProductsInCategory" asp-route-categoryId="@cookieCategoryId" asp-route-Name="@cookieCategory">Back to List</a>
+            <a asp-action="ViewProductsInCategory" asp-route-categoryId="@cookieCategoryId" asp-route-Name="@cookieCategory">Back to Category</a>
             break;
         case "Categories":
-            <a asp-action="Categories">Back to List</a>
+            <a asp-action="Categories">Back to List of Categories</a>
             break;
         case "ViewProductLanding":
-            <a asp-action="ViewProductLanding" asp-controller="Admin" asp-route-Sku=@TempData["Sku"]>Back to List</a>
+            <a asp-action="ViewProductLanding" asp-controller="Admin" asp-route-Sku=@TempData["Sku"]>Back to Product</a>
+            break;
+        case "AccountInfo":
+            <a asp-action="AccountInfo" asp-controller="Customer">Back to Account Info</a>
             break;
         default:
             <a asp-action="Categories">Back to List</a>
