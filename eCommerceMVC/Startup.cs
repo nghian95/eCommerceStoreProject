@@ -35,13 +35,19 @@ namespace eCommerceMVC
             services.AddAutoMapper(x => x.AddProfile(new eCommerceMapper()));
             services.AddHttpContextAccessor();
             services.AddSession();
-            //services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options =>
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options =>
+            {
+                options.LoginPath = "Home/Login";
+                options.LogoutPath = "Home/LogOut";
+                options.Cookie.Name = "Our_Unique_Cookie";
+            });
+            //services.Configure<CookiePolicyOptions>(options =>
             //{
-            //    options.LoginPath = "Home/Login";
-            //    options.LogoutPath = "Home/LogOut";
-            //    options.Cookie.Name = "Our_Unique_Cookie";
+            //    options.CheckConsentNeeded = context => true;
+            //    options.MinimumSameSitePolicy = Microsoft.AspNetCore.Http.SameSiteMode.None;
             //});
-        }
+
+    }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

@@ -5,6 +5,11 @@ namespace eCommerceClassLibrary.Models
 {
     public partial class Products
     {
+        public Products()
+        {
+            Transactions = new HashSet<Transactions>();
+        }
+
         public string Sku { get; set; }
         public string Name { get; set; }
         public int? Quantity { get; set; }
@@ -14,5 +19,6 @@ namespace eCommerceClassLibrary.Models
         public double? Sale { get; set; }
 
         public Categories Category { get; set; }
+        public ICollection<Transactions> Transactions { get; set; }
     }
 }

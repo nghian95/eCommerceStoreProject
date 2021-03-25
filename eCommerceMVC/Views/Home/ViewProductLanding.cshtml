@@ -4,12 +4,8 @@
 
 @{
     ViewData["Title"] = "ViewProductLanding";
-    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
-    //int count3 = Convert.ToInt32(httpContextAccessor.HttpContext.Request.Cookies["Count"]);
-    int count = (int)TempData["Count"];
-    TempData["Count"] = count;
-    string sku = (string)TempData["Sku"];
-    TempData["Sku"] = sku;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    int count = Convert.ToInt32(httpContextAccessor.HttpContext.Request.Cookies["Count"]);
 }
 
 <h2>&nbsp; @TempData["Name"] </h2>
@@ -37,7 +33,7 @@
                 @{ if (count != -1)
                     {
                         <div class="carousel-inner">
-                             @{
+                            @{
                                 for (int a = 0; a <= count; a++)
                                 {
                                     string var = "ImageID" + a;
@@ -67,43 +63,9 @@
                     }
                 }
             </div>
-            <div class="row" style="margin-left:5px;margin-top:5px">
-                <form method="post" enctype="multipart/form-data" asp-controller="Image" asp-action="Index">
-                    <div class="form-group" style="margin-bottom: 10px;">
-                        <p style="margin-bottom:5px;">Upload file</p>
-                        <input class="form-control" name="files" type="file" style="padding-bottom:35px"/>
-                    </div>
-                    <div class="form-group" style="margin-top: 0px;padding-top:0px">
-                        <input class="btn btn-success" type="submit" value="Upload" />
-                    </div>
-                </form>
-            </div>
         </div>
         <div class="col-md-6">
             <dl class="dl-horizontal">
-                <dt>
-                    @Html.DisplayNameFor(model => model.Sku)
-                </dt>
-                <dd>
-                    @Html.DisplayFor(model => model.Sku)
-                </dd>
-                <dt>
-                    @Html.DisplayNameFor(model => model.Name)
-                </dt>
-                <dd>
-                    @Html.DisplayFor(model => model.Name)
-                </dd>
-                @{ if (@Model.Quantity != null)
-                    {
-                        <dt>
-                            @Html.DisplayNameFor(model => model.Quantity)
-                        </dt>
-                        <dd>
-
-                            @Html.DisplayFor(model => model.Quantity)
-                        </dd>
-                    }
-                }
                 @{ if (@Model.Description != null)
                     {
                         <dt>
@@ -111,6 +73,17 @@
                         </dt>
                         <dd>
                             @Html.DisplayFor(model => model.Description)
+                        </dd>
+                    }
+                }
+                @{ if (@Model.Quantity != null)
+                    {
+                        <dt>
+                            In Stock:
+                        </dt>
+                        <dd>
+
+                            @Html.DisplayFor(model => model.Quantity)
                         </dd>
                     }
                 }
@@ -124,31 +97,17 @@
                         </dd>
                     }
                 }
-                @{ if (@Model.CategoryId != null)
-                    {
-                        <dt>
-                            @Html.DisplayNameFor(model => model.CategoryId)
-                        </dt>
-                        <dd>
-                            @Html.DisplayFor(model => model.CategoryId)
-                        </dd>
-                    }
-                }
                 @{ if (@Model.Sale != null)
                     {
                         <dt>
                             @Html.DisplayNameFor(model => model.Sale)
                         </dt>
                         <dd>
-                            @Html.DisplayFor(model => model.Sale)
+                            @Html.DisplayFor(model => model.Sale)% OFF
                         </dd>
                     }
                 }
             </dl>
-            <div>
-                @Html.ActionLink("Edit", "EditProduct", Model) | 
-                @Html.ActionLink("Delete Image", "DeleteImage", Model)
-            </div>
         </div>
     </div>
 </div>

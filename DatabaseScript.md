@@ -62,6 +62,7 @@ CREATE TABLE Transactions
     TotalPrice DECIMAL (18,2),
     TransactionGroup INT,
     UserName VARCHAR(20),
+    Status INT,
     FOREIGN KEY (SKU) REFERENCES dbo.Products (SKU),
     FOREIGN KEY (UserName) REFERENCES dbo.Users (UserName)
 )

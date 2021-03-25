@@ -15,7 +15,7 @@ namespace eCommerceMVC.Models
     public class Products /*: IEquatable<Products>*/
     {
         [Required]
-        public string SKU { get; set; }
+        public string Sku { get; set; }
         [Required]
         public string Name { get; set; }
         public int? Quantity { get; set; }

@@ -7,10 +7,6 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using System.Security.Claims;
-using System.IO;
 
 namespace eCommerceMVC.Controllers
 {
@@ -19,7 +15,13 @@ namespace eCommerceMVC.Controllers
         private readonly ILogger<AdminController> _logger;
         private readonly eCommerceRepository _repository;
         private readonly IMapper _mapper;
-        private CookieOptions option = new CookieOptions();
+        private CookieOptions option = new CookieOptions()
+        {
+            IsEssential = true,
+            Secure = true, 
+            SameSite = SameSiteMode.None
+        };
+
 
 
         public AdminController(ILogger<AdminController> logger, eCommerceRepository repository, IMapper mapper)
@@ -316,7 +318,7 @@ namespace eCommerceMVC.Controllers
             {
                 return RedirectToAction("Login", "Home");
             }
-            var tuple = _repository.DeleteProduct(product.SKU);
+            var tuple = _repository.DeleteProduct(product.Sku);
             int value = tuple.Item1;
             ViewBag.Message = tuple.Item2;
             switch (value)
@@ -353,24 +355,33 @@ namespace eCommerceMVC.Controllers
 
         public IActionResult ViewProductLanding(Models.Products product)
         {
+            CookieOptions option = new CookieOptions();
             Response.Cookies.Append("BackLink", "ViewProductLanding", option);
-            if (product.Name == null)
+            if (product.Name == null || product.Name == "")
             {
-                product = _mapper.Map<Products>(_repository._context.Products.Find(product.SKU));
+                product = _mapper.Map<Products>(_repository._context.Products.Find(product.Sku));
             }
+            //HttpCookie myCookie = new HttpCookie("myCookie");
             TempData["Name"] = product.Name;
-            TempData["Sku"] = product.SKU;
+            TempData["Sku"] = product.Sku;
             //var tuple = _repository.ShowImages(product.SKU);
-            var tuple = _repository.FindImageIds(product.SKU);
+            var tuple = _repository.FindImageIds(product.Sku);
             int[] ids = tuple.Item1;
             ViewBag.Message = tuple.Item2;
             int count = (ids.Count(s => s != 0) - 1);
-            Response.Cookies.Append("Count", count.ToString(), option);
+            string strCount = Convert.ToString(count);
+            string cookieCount1 = Request.Cookies["Count"];
+            HttpContext.Response.Cookies.Delete("Count");
+            HttpContext.Response.Cookies.Append("Count", "1", option);
+            string cookieCount2 = Request.Cookies["Count"];
+            HttpContext.Response.Cookies.Delete("Count");
+            HttpContext.Response.Cookies.Append("Count", strCount, option);
+            string cookieCount = Request.Cookies["Count"];
             for (int num = 0; num <= count; num++)
             {
                 ViewData["ImageID" + num] = ids[num];
             }
-            //TempData["Count"] = ids.Count(s => s != 0) - 1;
+            TempData["Count"] = ids.Count(s => s != 0) - 1;
             //ViewData["ImageID"] = id;
             //var image = _repository.ShowSingleImage(id);
             return View(product);
@@ -402,10 +413,10 @@ namespace eCommerceMVC.Controllers
 
         public IActionResult DeleteImage(Models.Products product)
         {
-            var tuple = _repository.FindImageIds(product.SKU);
+            var tuple = _repository.FindImageIds(product.Sku);
             int[] ids = tuple.Item1;
             int num = 0;
-            TempData["Product"] = product.SKU;
+            TempData["Sku"] = product.Sku;
             foreach (var id in ids)
             {
                 ViewData["ImageID" + num] = id;
@@ -419,8 +430,9 @@ namespace eCommerceMVC.Controllers
             var tuple = _repository.DeleteImage(id);
             int value = tuple.Item1;
             ViewBag.Message = tuple.Item2;
-
-            var tuple2 = _repository.FindImageIds((string)TempData["Product"]);
+            string tempValue = (string)TempData["Sku2"];
+            TempData["Sku"] = tempValue;
+            var tuple2 = _repository.FindImageIds((string)TempData["Sku"]);
             int[] ids = tuple2.Item1;
 
             switch (value)

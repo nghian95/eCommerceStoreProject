@@ -564,6 +564,32 @@ namespace eCommerceClassLibrary
             return (value, message);
         }
 
+        public (int, string) AddTransaction(Transactions transaction)
+        {
+            int value = 0;
+            string message = "";
+            try
+            {
+                _context.Transactions.Add(transaction);
+                _context.SaveChanges();
+                if (_context.Transactions.Find(transaction.TransactionId) != null)
+                {
+                    value = 1;
+                }
+                else
+                {
+                    value = -1;
+                    message = "Failed to add transaction.";
+                }
+            }
+            catch (Exception ex)
+            {
+                value = -99;
+                message = ex.Message;
+            }
+            return (value, message);
+        }
+
         //public (int, string) DummyMethod(string variable)
         //{
         //    int value = 0;

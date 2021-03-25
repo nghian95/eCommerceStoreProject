@@ -25,6 +25,7 @@
     - Account History / Order History
 
 *BUGS*
+
     - With 10 images, sometimes the product landing page doesn't load the ImageIds fast enough for the page and causes an error
     - Name for Categories is one step behind. 
 

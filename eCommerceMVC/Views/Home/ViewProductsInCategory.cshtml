@@ -3,7 +3,7 @@
 
 @{
     ViewData["Title"] = "ViewProductsInCategory";
-    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    Layout = "~/Views/Shared/_Layout.cshtml";
     var categories = httpContextAccessor.HttpContext.Request.Cookies["Category"];
     var cookieCategoryId = Int32.Parse(httpContextAccessor.HttpContext.Request.Cookies["CategoryId"]);
     var cookieCategory = categories.Substring(0, categories.Length - 1);
@@ -40,9 +40,6 @@
 }
 <h2>View All @categories</h2>
 
-<p>
-    <a asp-action="AddProduct" asp-route-categoryId=@cookieCategoryId>Add @category</a>
-</p>
 <div>
     @{int num = 0; }
     @foreach (var item in Model)
@@ -57,11 +54,6 @@
             </div>
         }
         
-
-        <div>
-            @Html.DisplayNameFor(model => model.Sku):
-            @Html.DisplayFor(modelItem => item.Sku)
-        </div>
         <div>
             @Html.DisplayNameFor(model => model.Name):
             @Html.DisplayFor(modelItem => item.Name)
@@ -75,10 +67,7 @@
             @Html.DisplayFor(modelItem => item.Price)
         </div>
         <div>
-            @Html.ActionLink("View", "ViewProductLanding", item) |
-            @Html.ActionLink("Edit", "EditProduct", new { Sku = item.Sku, Name = item.Name, Quantity = item.Quantity, Description = item.Description, Price = item.Price, CategoryId = item.CategoryId, Sale = item.Sale }) |
-            @Html.ActionLink("Duplicate", "DuplicateProduct", item) |
-            @Html.ActionLink("Delete", "DeleteProduct", item)
+            @Html.ActionLink("View", "ViewProductLanding", item) 
         </div>
     }
 </div>

@@ -18,6 +18,7 @@ namespace eCommerceClassLibrary.Models
         public virtual DbSet<Categories> Categories { get; set; }
         public virtual DbSet<Images> Images { get; set; }
         public virtual DbSet<Products> Products { get; set; }
+        public virtual DbSet<Transactions> Transactions { get; set; }
         public virtual DbSet<Users> Users { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -96,6 +97,32 @@ namespace eCommerceClassLibrary.Models
                     .WithMany(p => p.Products)
                     .HasForeignKey(d => d.CategoryId)
                     .HasConstraintName("FK__Products__Catego__38996AB5");
+            });
+
+            modelBuilder.Entity<Transactions>(entity =>
+            {
+                entity.HasKey(e => e.TransactionId);
+
+                entity.Property(e => e.TransactionId).HasColumnName("TransactionID");
+
+                entity.Property(e => e.Sku)
+                    .HasColumnName("SKU")
+                    .HasMaxLength(20)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.UserName)
+                    .HasMaxLength(20)
+                    .IsUnicode(false);
+
+                entity.HasOne(d => d.SkuNavigation)
+                    .WithMany(p => p.Transactions)
+                    .HasForeignKey(d => d.Sku)
+                    .HasConstraintName("FK__Transaction__SKU__76969D2E");
+
+                entity.HasOne(d => d.UserNameNavigation)
+                    .WithMany(p => p.Transactions)
+                    .HasForeignKey(d => d.UserName)
+                    .HasConstraintName("FK__Transacti__UserN__778AC167");
             });
 
             modelBuilder.Entity<Users>(entity =>

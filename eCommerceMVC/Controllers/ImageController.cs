@@ -16,7 +16,7 @@ namespace eCommerceMVC.Controllers
     {
         private readonly eCommerceRepository _repository;
         private readonly IMapper _mapper;
-        private CookieOptions option = new CookieOptions();
+        private CookieOptions _option = new CookieOptions();
 
 
         public ImageController(eCommerceRepository repository, IMapper mapper)
@@ -47,11 +47,22 @@ namespace eCommerceMVC.Controllers
         public IActionResult Index(IFormFile files)
         {
             var tuple = (0,"");
-            if (Convert.ToInt32(Request.Cookies["Count"]) >= 9)
+            int count = (int)TempData["Count"];
+            //if (Convert.ToInt32(Request.Cookies["Count"]) >= 9)
+            //{
+            //    ViewBag.Message = "Max amount of photos has been reached (10).";
+            //    return View("Failed");
+            //}
+            if (count >= 9)
             {
                 ViewBag.Message = "Max amount of photos has been reached (10).";
                 return View("Failed");
             }
+            //var tuple2 = _repository.FindImageIds((string)TempData["Sku"]);
+            //int[] ids = tuple2.Item1;
+            //ViewBag.Message = tuple2.Item2;
+            //int count = (ids.Count(s => s != 0) - 1);
+            //Response.Cookies.Append("Count", count.ToString(), _option);
             if (files != null)
             {
                 if (files.Length > 0)
@@ -80,12 +91,24 @@ namespace eCommerceMVC.Controllers
                     var tuple2 = _repository.FindImageIds((string)TempData["Sku"]);
                     int[] ids = tuple2.Item1;
                     ViewBag.Message = tuple2.Item2;
-                    int count = (ids.Count(s => s != 0) - 1);
-                    Response.Cookies.Append("Count", count.ToString(), option);
+                    int count2 = (ids.Count(s => s != 0) - 1);
+                    TempData["Count"] = count2;
+                    //Response.Cookies.Append("Count", count2.ToString(), _option);
                 }
 
+            } else
+            {
+                var tuple2 = _repository.FindImageIds((string)TempData["Sku"]);
+                int[] ids = tuple2.Item1;
+                ViewBag.Message = tuple2.Item2;
+                int count2 = (ids.Count(s => s != 0) - 1);
+                TempData["Count"] = count2;
+
+                //Response.Cookies.Append("Count", count.ToString(), _option);
             }
             int result = tuple.Item1;
+            string Sku = (string) TempData["Sku"];
+            TempData["Sku"] = Sku;
             if (result == 1) {
                 return View("Success");
             } else
