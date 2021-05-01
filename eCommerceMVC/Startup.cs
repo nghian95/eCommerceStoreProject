@@ -37,8 +37,8 @@ namespace eCommerceMVC
             services.AddSession();
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options =>
             {
-                options.LoginPath = "Home/Login";
-                options.LogoutPath = "Home/LogOut";
+                options.LoginPath = "/Home/Login";
+                options.LogoutPath = "/Home/LogOut";
                 options.Cookie.Name = "Our_Unique_Cookie";
             });
             //services.Configure<CookiePolicyOptions>(options =>

@@ -7,6 +7,9 @@
 *IMPORTANT*
 
     - Add to Cart functionality
+        Figure out why some transactions are being created as null sku
+    - Learn how to backup the sql server by having the create script in a separate file so I can work from my main PC as well
+        
     - Discount price vs Total Price visible
     - Upload images for products
     - Admin page of Product Landing should have rearrange images, delete product, duplicate product.
@@ -23,6 +26,7 @@
     - Wishlist
     - Table of Past Transactions
     - Account History / Order History
+    -
 
 *BUGS*
 
@@ -52,3 +56,10 @@
     CategoryID is a Foreign Key 
 
     SKU example: PoloT01-R for Red Polo Shirt
+
+    Transaction Status 0 = Wish list
+                       1 = Add to Cart
+                       2 = Purchased
+                       -1 = Return/Refund
+    
+    TransactionGroup is for Purchases that have multiple items.

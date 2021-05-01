@@ -166,13 +166,13 @@ namespace eCommerceMVC.Controllers
             Response.Cookies.Append("BackLink", "Products", _option);
 
             var result = _repository.ViewAllProducts();
-            List<eCommerceClassLibrary.Models.Products> products = result.Item1;
+            List<Products> products = result.Item1;
             ViewBag.Message = result.Item2;
-            List<Products> modelProducts = new List<Products>();
-            Products product = new Products();
+            List<Models.Products> modelProducts = new List<Models. Products>();
+            Models.Products product = new Models.Products();
             foreach (var prod in products)
             {
-                product = _mapper.Map<Products>(prod);
+                product = _mapper.Map<Models.Products>(prod);
                 modelProducts.Add(product);
             }
             return View(modelProducts);
@@ -199,18 +199,52 @@ namespace eCommerceMVC.Controllers
             return View(mvcCategories);
         }
 
-        public IActionResult AddToCart(Models.Products product)
+        public IActionResult AddToCart(Models.Products product, IFormCollection frm)
         {
             Transactions transaction = new Transactions();
             transaction.Sku = product.Sku;
             transaction.UserName = Request.Cookies["UserName"];
+            transaction.Status = 1;
+            transaction.Quantity = Convert.ToInt32(frm["amount"]);
+            transaction.TotalPrice = product.Price * transaction.Quantity;
             _repository.AddTransaction(transaction);
-            return View();
+            var tuple = _repository.RetrieveTransactions(1);
+            List<Transactions> transactions = tuple.Item1;
+            ViewBag.Message = tuple.Item2;
+            Models.Transactions modelTransaction = new Models.Transactions();
+            List<Models.Transactions> modelTransactions = new List<Models.Transactions>();
+            foreach (var model in transactions)
+            {
+                modelTransaction = _mapper.Map<Models.Transactions>(transaction);
+                modelTransactions.Add(modelTransaction);
+            }
+            return RedirectToAction("ViewCart") ; // could also just make it redirect to view cart
+        }
+
+        public IActionResult SaveEditedQuantity(Models.Transactions transaction, IFormCollection frm)
+        {
+            int transactionID = transaction.TransactionId;
+            int quantity = Convert.ToInt32(frm["Quantity"]);
+            _repository.EditTransactionQuantity(transactionID, quantity);
+            
+            
+            return RedirectToAction("ViewCart");
         }
 
         public IActionResult ViewCart()
         {
-            return View();
+            Response.Cookies.Append("BackLink", "Cart", _option);
+            var tuple = _repository.RetrieveTransactions(1);
+            List<Transactions> transactions = tuple.Item1;
+            List<Models.Transactions> modelTransactions = new List<Models.Transactions>();
+            Models.Transactions modTransac = new Models.Transactions();
+            foreach (var item in transactions)
+            {
+                modTransac = _mapper.Map<Models.Transactions>(item);
+                modelTransactions.Add(modTransac);
+            }
+            ViewBag.Message = tuple.Item2;
+            return View(modelTransactions);
         }
 
         public IActionResult ViewOrderHistory()
@@ -221,6 +255,21 @@ namespace eCommerceMVC.Controllers
         public IActionResult Checkout()
         {
             return View();
+        }
+
+        public IActionResult DeleteTransaction(Transactions transaction)
+        {
+            eCommerceClassLibrary.Models.Transactions entityTransaction = _mapper.Map<eCommerceClassLibrary.Models.Transactions>(transaction);
+            var tuple = _repository.DeleteTransaction(entityTransaction);
+            int value = tuple.Item1;
+            ViewBag.Message = tuple.Item2;
+            if (value == 1)
+            {
+                return View("Success");
+            } else
+            {
+                return View("Failed");
+            }
         }
     }
 }

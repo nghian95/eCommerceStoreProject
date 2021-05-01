@@ -570,7 +570,26 @@ namespace eCommerceClassLibrary
             string message = "";
             try
             {
-                _context.Transactions.Add(transaction);
+                //int max = Convert.ToInt32(_context.Transactions.Where(x => x.TransactionGroup != null).OrderByDescending(t => t.TransactionGroup).FirstOrDefault().TransactionGroup);
+                //transaction.TransactionGroup = ++max;
+                if (transaction.Status == 1)
+                {
+                    Transactions transac = _context.Transactions.Where(x => x.Sku == transaction.Sku).FirstOrDefault();
+                    if (transac != null)
+                    {
+                        if (transac.Quantity != null)
+                        {
+                            transac.Quantity = transac.Quantity + transaction.Quantity;
+                        }
+                        _context.Transactions.Update(transac);
+                    } else
+                    {
+                        _context.Transactions.Add(transaction);
+                    }
+                } else
+                {
+                    _context.Transactions.Add(transaction);
+                }
                 _context.SaveChanges();
                 if (_context.Transactions.Find(transaction.TransactionId) != null)
                 {
@@ -589,6 +608,110 @@ namespace eCommerceClassLibrary
             }
             return (value, message);
         }
+
+        public (List<Transactions>, string) RetrieveTransactions(int status)
+        {
+            List<Transactions> transactions = new List<Transactions>();
+            string message = "";
+            try
+            {
+                transactions = _context.Transactions.Where(x => x.Status == status).ToList();
+                if (transactions != null)
+                {
+                    message = "Successful";
+                }
+                else
+                {
+                    message = "Failed to retrieve transactions.";
+                }
+            }
+            catch (Exception ex)
+            {
+                message = ex.Message;
+            }
+            return (transactions, message);
+        }
+
+        public (int, string) DeleteTransaction(Transactions transaction)
+        {
+            int value = 0;
+            string message = "";
+            try
+            {
+                Transactions testTransaction = _context.Transactions.Find(transaction.TransactionId);
+                _context.Transactions.Remove(testTransaction);
+                _context.SaveChanges();
+                if (_context.Transactions.Find(transaction.TransactionId) == null)
+                {
+                    value = 1;
+                }
+                else
+                {
+                    value = -1;
+                    message = "Failed to delete transaction.";
+                }
+            }
+            catch (Exception ex)
+            {
+                value = -99;
+                message = ex.Message;
+            }
+            return (value, message);
+        }
+
+        public (int, string) EditTransactionQuantity(int transactionID, int quantity)
+        {
+            int value = 0;
+            string message = "";
+            try
+            {
+                Transactions transaction = _context.Transactions.Find(transactionID);
+                transaction.Quantity = quantity;
+                _context.Transactions.Update(transaction);
+                _context.SaveChanges();
+                if (_context.Transactions.Find(transactionID).Quantity == quantity)
+                {
+                    value = 1;
+                }
+                else
+                {
+                    value = -1;
+                    message = "Failed to Edit Transaction Quantity";
+                }
+            }
+            catch (Exception ex)
+            {
+                value = -99;
+                message = ex.Message;
+            }
+            return (value, message);
+        }
+
+        //public (int, string) AddToCart(Transactions transaction)
+        //{
+        //    int value = 0;
+        //    string message = "";
+        //    try
+        //    {
+        //        _context.Add(transaction);
+        //        _context.SaveChanges();
+        //        if (_context.Transactions.Find(transaction.TransactionId) != null)
+        //        {
+        //            value = 1;
+        //        }
+        //        else
+        //        {
+        //            value = -1;
+        //            message = "Failed to Add to Cart";
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        value = -99;
+        //        message = ex.Message;
+        //    }
+        //    return (value, message);
+        //}
 
         //public (int, string) DummyMethod(string variable)
         //{

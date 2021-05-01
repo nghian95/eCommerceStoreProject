@@ -15,6 +15,12 @@ namespace eCommerceMVC.Repository
             CreateMap<Models.Products, Products>();
             CreateMap<Categories, Models.Categories>();
             CreateMap<Models.Categories, Categories>();
+            CreateMap<Models.Transactions, Transactions>();
+            CreateMap<Transactions, Models.Transactions>();
+            CreateMap<Images, Models.Images>();
+            CreateMap<Models.Images, Images>();
+            CreateMap<Users, Models.Users>();
+            CreateMap<Models.Users, Users>();
         }
     }
 }

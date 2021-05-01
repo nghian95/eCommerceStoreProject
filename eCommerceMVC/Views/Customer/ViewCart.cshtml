@@ -1,0 +1,82 @@
+﻿@model IEnumerable<eCommerceMVC.Models.Transactions>
+
+@{
+    ViewData["Title"] = "ViewCart";
+    Layout = "~/Views/Shared/_LayoutCustomer.cshtml";
+}
+
+<h2>View Cart</h2>
+@if (Model != null)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.TransactionId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Sku)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Quantity)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.TotalPrice)
+                </th>
+                <th hidden>
+                    @Html.DisplayNameFor(model => model.TransactionGroup)
+                </th>
+                <th hidden>
+                    @Html.DisplayNameFor(model => model.UserName)
+                </th>
+                <th hidden>
+                    @Html.DisplayNameFor(model => model.Status)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+    @foreach (var item in Model)
+    {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TransactionId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Sku)
+                </td>
+                <td>
+                    @*@Html.DisplayFor(modelItem => item.Quantity)*@
+                    <form asp-action="SaveEditedQuantity" asp-route-TransactionId=@item.TransactionId>
+                        <div class="form-group">
+                            @*<label asp-for=@item.Quantity class="control-label"></label>*@
+                            @*<input asp-for=@item.Quantity class="form-control" />*@
+                            @Html.TextBox("Quantity", item.Quantity)
+                            <span asp-validation-for=@item.Quantity class="text-danger"></span>
+                            <input type="submit" value="Update" />
+                        </div>
+                    </form>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TotalPrice)
+                </td>
+                <td hidden>
+                    @Html.DisplayFor(modelItem => item.TransactionGroup)
+                </td>
+                <td hidden>
+                    @Html.DisplayFor(modelItem => item.UserName)
+                </td>
+                <td hidden>
+                    @Html.DisplayFor(modelItem => item.Status)
+                </td>
+                <td>
+                    @Html.ActionLink("Delete", "DeleteTransaction", item)
+                </td>
+            </tr>
+    }
+        </tbody>
+    </table>
+} else
+{
+    <p>Your cart is empty.</p>
+}
