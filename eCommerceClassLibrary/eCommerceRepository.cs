@@ -580,6 +580,8 @@ namespace eCommerceClassLibrary
                         if (transac.Quantity != null)
                         {
                             transac.Quantity = transac.Quantity + transaction.Quantity;
+                            decimal? individualPrice = transaction.TotalPrice / transaction.Quantity;
+                            transac.TotalPrice = transac.Quantity * individualPrice;
                         }
                         _context.Transactions.Update(transac);
                     } else
@@ -666,17 +668,27 @@ namespace eCommerceClassLibrary
             try
             {
                 Transactions transaction = _context.Transactions.Find(transactionID);
-                transaction.Quantity = quantity;
-                _context.Transactions.Update(transaction);
-                _context.SaveChanges();
-                if (_context.Transactions.Find(transactionID).Quantity == quantity)
+                if (quantity == 0)
                 {
-                    value = 1;
+                    _context.Transactions.Remove(transaction);
+                    _context.SaveChanges();
                 }
                 else
                 {
-                    value = -1;
-                    message = "Failed to Edit Transaction Quantity";
+                    decimal? individualPrice = transaction.TotalPrice / transaction.Quantity;
+                    transaction.Quantity = quantity;
+                    transaction.TotalPrice = quantity * individualPrice;
+                    _context.Transactions.Update(transaction);
+                    _context.SaveChanges();
+                    if (_context.Transactions.Find(transactionID).Quantity == quantity)
+                    {
+                        value = 1;
+                    }
+                    else
+                    {
+                        value = -1;
+                        message = "Failed to Edit Transaction Quantity";
+                    }
                 }
             }
             catch (Exception ex)

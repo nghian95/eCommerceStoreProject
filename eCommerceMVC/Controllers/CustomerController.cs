@@ -89,10 +89,10 @@ namespace eCommerceMVC.Controllers
                 return RedirectToAction("ViewProductLanding", "Home");
             }
             Response.Cookies.Append("BackLink", "ViewProductLanding", _option);
-            if (product.Name == null)
-            {
+            //if (product.Name == null || product.Name == "")
+            //{
                 product = _mapper.Map<Models.Products>(_repository._context.Products.Find(product.Sku));
-            }
+            //}
             TempData["Name"] = product.Name;
             TempData["Sku"] = product.Sku;
             //var tuple = _repository.ShowImages(product.SKU);
@@ -187,13 +187,13 @@ namespace eCommerceMVC.Controllers
             Response.Cookies.Append("BackLink", "Categories", _option);
 
             var result = _repository.ViewCategories();
-            List<eCommerceClassLibrary.Models.Categories> categories = result.Item1;
+            List<Categories> categories = result.Item1;
             ViewBag.Message = result.Item2;
-            List<Categories> mvcCategories = new List<Categories>();
-            Categories mvcCategory = new Categories();
-            foreach (eCommerceClassLibrary.Models.Categories category in categories)
+            List<Models.Categories> mvcCategories = new List<Models.Categories>();
+            Models.Categories mvcCategory = new Models.Categories();
+            foreach (Categories category in categories)
             {
-                mvcCategory = _mapper.Map<Categories>(category);
+                mvcCategory = _mapper.Map<Models.Categories>(category);
                 mvcCategories.Add(mvcCategory);
             }
             return View(mvcCategories);
@@ -207,6 +207,7 @@ namespace eCommerceMVC.Controllers
             transaction.Status = 1;
             transaction.Quantity = Convert.ToInt32(frm["amount"]);
             transaction.TotalPrice = product.Price * transaction.Quantity;
+            transaction.Name = product.Name;
             _repository.AddTransaction(transaction);
             var tuple = _repository.RetrieveTransactions(1);
             List<Transactions> transactions = tuple.Item1;

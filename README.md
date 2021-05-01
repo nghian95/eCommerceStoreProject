@@ -5,9 +5,10 @@
 **#TO DO#**
 
 *IMPORTANT*
-    - Show Product name rather than product SKU
-    - View Products by clicking on Product Name
-    - In Cart have a way to click on products to go back and view them.
+    - View Products by clicking on Product Name - ProductinCategories page.
+    - Basic Checkout Functionality
+    - Order History page
+    - Total Cart Price
         
     - Discount price vs Total Price visible
     - Upload images for products

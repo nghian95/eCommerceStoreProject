@@ -14,6 +14,7 @@ namespace eCommerceMVC.Models
         public int? TransactionGroup { get; set; }
         public string UserName { get; set; }
         public int? Status { get; set; }
+        public string Name { get; set; }
 
         public Products SkuNavigation { get; set; }
         public Users UserNameNavigation { get; set; }

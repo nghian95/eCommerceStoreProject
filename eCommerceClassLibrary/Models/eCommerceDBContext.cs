@@ -26,7 +26,7 @@ namespace eCommerceClassLibrary.Models
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer("Data Source = (localdb)\\MSSQLLocalDB; Initial Catalog = eCommerceDB; Integrated Security = true");
+                optionsBuilder.UseSqlServer("Data Source= (localdb)\\MSSQLLocalDB; Initial Catalog = eCommerceDB; Integrated Security = true");
             }
         }
 
@@ -104,6 +104,12 @@ namespace eCommerceClassLibrary.Models
                 entity.HasKey(e => e.TransactionId);
 
                 entity.Property(e => e.TransactionId).HasColumnName("TransactionID");
+
+                entity.Property(e => e.Name)
+                    .IsRequired()
+                    .HasMaxLength(40)
+                    .IsUnicode(false)
+                    .HasDefaultValueSql("('')");
 
                 entity.Property(e => e.Sku)
                     .HasColumnName("SKU")
