@@ -5,10 +5,9 @@
 **#TO DO#**
 
 *IMPORTANT*
-
-    - Add to Cart functionality
-        Figure out why some transactions are being created as null sku
-    - Learn how to backup the sql server by having the create script in a separate file so I can work from my main PC as well
+    - Show Product name rather than product SKU
+    - View Products by clicking on Product Name
+    - In Cart have a way to click on products to go back and view them.
         
     - Discount price vs Total Price visible
     - Upload images for products
@@ -34,21 +33,19 @@
     - Name for Categories is one step behind. 
 
 *OPTIONAL*
-
-    - Redirect from Success/Failure after 5 seconds.
+    - Learn how to backup the sql server by having the create script in a separate file so I can work from my main PC as well
+    - Redirect from Success after 5 seconds.
     - Cookie-based Authentication / Identity-based Authentication
     - Different themes admin can choose from
     - Add popups instead of new pages for simple edits/views
 
 **#DOUBLECHECK#**
 
-    How to pass properties into Action Methods (do we need asp-route-id or the parameter Models.Products or do we need IFormCollection frm)
 
 **#IDEAS#**
 
     1) For simplistic edits, rather than leading to another view, perhaps use a partial view or even have a pop-up.
-    2) After Success or Failure, automatically redirect to appropriate page.
-    3) Overriding Equals to compare Products object's values
+    2) Overriding Equals to compare Products object's values
 
 **#TECHNICAL DOCUMENTATION#**
 
