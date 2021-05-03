@@ -580,8 +580,6 @@ namespace eCommerceClassLibrary
                         if (transac.Quantity != null)
                         {
                             transac.Quantity = transac.Quantity + transaction.Quantity;
-                            decimal? individualPrice = transaction.TotalPrice / transaction.Quantity;
-                            transac.TotalPrice = transac.Quantity * individualPrice;
                         }
                         _context.Transactions.Update(transac);
                     } else
@@ -611,13 +609,18 @@ namespace eCommerceClassLibrary
             return (value, message);
         }
 
-        public (List<Transactions>, string) RetrieveTransactions(int status)
+        public (List<Transactions>, string, decimal?) RetrieveTransactions(int status)
         {
             List<Transactions> transactions = new List<Transactions>();
             string message = "";
+            decimal? subtotal = 0;
             try
             {
                 transactions = _context.Transactions.Where(x => x.Status == status).ToList();
+                foreach (Transactions transac in transactions)
+                {
+                    subtotal += (transac.Quantity * transac.Price);
+                }
                 if (transactions != null)
                 {
                     message = "Successful";
@@ -631,7 +634,7 @@ namespace eCommerceClassLibrary
             {
                 message = ex.Message;
             }
-            return (transactions, message);
+            return (transactions, message, subtotal);
         }
 
         public (int, string) DeleteTransaction(Transactions transaction)
@@ -675,9 +678,7 @@ namespace eCommerceClassLibrary
                 }
                 else
                 {
-                    decimal? individualPrice = transaction.TotalPrice / transaction.Quantity;
                     transaction.Quantity = quantity;
-                    transaction.TotalPrice = quantity * individualPrice;
                     _context.Transactions.Update(transaction);
                     _context.SaveChanges();
                     if (_context.Transactions.Find(transactionID).Quantity == quantity)

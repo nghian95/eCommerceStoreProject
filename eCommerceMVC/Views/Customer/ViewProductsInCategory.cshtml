@@ -36,38 +36,48 @@
             category = cookieCategory;
             break;
     }
+    if (TempData["Category"].ToString() != categories)
+    {
+        categories = TempData["Category"].ToString();
+    }
     //TempData["BackLink"] = "SpecificCategory";
 }
 <h2>View All @categories</h2>
 
-<div>
-    @{int num = 0; }
-    @foreach (var item in Model)
+@{
+    if (Model != null && Model.Count() != 0)
     {
-        var name = "Image" + num;
-        num++;
-        
-        if (@ViewData[name] != null)
-        {
-            <div>
-                <img class="w-25" src="@Url.Action("show", "image", new { id = (int)@ViewData[name] })" alt="Product's Picture">
-            </div>
-        }
-        
         <div>
-            @Html.DisplayNameFor(model => model.Name):
-            @Html.DisplayFor(modelItem => item.Name)
-        </div>
-        <div>
-            @Html.DisplayNameFor(model => model.Quantity):
-            @Html.DisplayFor(modelItem => item.Quantity)
-        </div>
-        <div>
-            @Html.DisplayNameFor(model => model.Price):
-            @Html.DisplayFor(modelItem => item.Price)
-        </div>
-        <div>
-            @Html.ActionLink("View", "ViewProductLanding", item) 
+            @{int num = 0; }
+            @foreach (var item in Model)
+            {
+                var name = "Image" + num;
+                num++;
+
+                if (@ViewData[name] != null)
+                {
+                    <div>
+                        <img class="w-25" src="@Url.Action("show", "image", new { id = (int)@ViewData[name] })" alt="Product's Picture">
+                    </div>
+                }
+
+                <div>
+                    @Html.ActionLink(item.Name, "ViewProductLanding", item)
+                </div>
+                <div>
+                    @Html.DisplayNameFor(model => model.Quantity):
+                    @Html.DisplayFor(modelItem => item.Quantity)
+                </div>
+                <div>
+                    @Html.DisplayNameFor(model => model.Price):
+                    @Html.DisplayFor(modelItem => item.Price)
+                </div>
+            }
         </div>
     }
-</div>
+    else
+    {
+        string categ = ((string)@categories.ToLower());
+        <p>We don't have any @categ yet, sorry!</p>
+    }
+}

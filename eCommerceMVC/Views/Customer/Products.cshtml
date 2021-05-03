@@ -37,7 +37,7 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Name)
+                    @Html.ActionLink(item.Name, "ViewProductLanding", item)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Quantity)
@@ -50,9 +50,6 @@
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Sale)
-                </td>
-                <td>
-                    @Html.ActionLink("View", "ViewProductLanding", item)
                 </td>
             </tr>
         }

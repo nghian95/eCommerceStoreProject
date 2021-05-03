@@ -1,6 +1,7 @@
 ﻿USE [eCommerceDB]
 
 SELECT * FROM Products
+Select * FROM Categories
 SELECT * FROM Images
 SELECT * FROM Users
 SELECT * FROM Transactions
@@ -41,3 +42,6 @@ SELECT * FROM Transactions
  UPDATE Transactions
  SET Name = 'Yellow Cotton Hoodie'
  WHERE SKU = 'CotnHD01-Y'
+
+EXEC sp_RENAME 'dbo.Transactions.TotalPrice', 'Price', 'COLUMN'
+GO

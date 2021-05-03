@@ -6,9 +6,14 @@
 
 *IMPORTANT*
     - View Products by clicking on Product Name - ProductinCategories page.
+
+    - Either hide empty categories or solve the exception for Customer
+    - Clicking on Categories makes the cookies delayed.
     - Basic Checkout Functionality
     - Order History page
     - Total Cart Price
+    - Logoff functionality
+    - Register Account page
         
     - Discount price vs Total Price visible
     - Upload images for products
@@ -35,6 +40,7 @@
 
 *OPTIONAL*
     - Learn how to backup the sql server by having the create script in a separate file so I can work from my main PC as well
+    - How to have images all the same size/layout.
     - Redirect from Success after 5 seconds.
     - Cookie-based Authentication / Identity-based Authentication
     - Different themes admin can choose from

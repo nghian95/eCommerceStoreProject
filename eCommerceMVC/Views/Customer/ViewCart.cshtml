@@ -21,7 +21,7 @@
                     @Html.DisplayNameFor(model => model.Quantity)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.TotalPrice)
+                    @Html.DisplayNameFor(model => model.Price)
                 </th>
                 <th hidden>
                     @Html.DisplayNameFor(model => model.TransactionGroup)
@@ -53,7 +53,7 @@
                     </td>
                     <td>
                         @*@Html.DisplayFor(modelItem => item.Quantity)*@
-                        <form asp-action="SaveEditedQuantity" asp-route-TransactionId=@item.TransactionId asp-route-TotalPrice=@item.TotalPrice>
+                        <form asp-action="SaveEditedQuantity" asp-route-TransactionId=@item.TransactionId asp-route-Price=@item.Price>
                             <div class="form-group">
                                 @*<label asp-for=@item.Quantity class="control-label"></label>*@
                                 @*<input asp-for=@item.Quantity class="form-control" />*@
@@ -64,7 +64,7 @@
                         </form>
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.TotalPrice)
+                        $@Html.DisplayFor(modelItem => item.Price)
                     </td>
                     <td hidden>
                         @Html.DisplayFor(modelItem => item.TransactionGroup)
@@ -79,12 +79,27 @@
                         @Html.ActionLink("Delete", "DeleteTransaction", item)
                     </td>
                 </tr>
+                <tr>
+                    <td>
+                    </td>
+                    <td>
+                    </td>
+                    <td>
+                        <b>Subtotal:</b> $@TempData["Subtotal"]
+                    </td>
+                    <td>
+                    </td>
+                </tr>
             }
 
+
         </tbody>
+
     </table>
 
-} else
+
+}
+else
 {
     <p>Your cart is empty.</p>
 }

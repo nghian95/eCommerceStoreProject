@@ -25,10 +25,7 @@
         {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.ActionLink("View Products", "ViewProductsInCategory", new { CategoryId = item.CategoryId, Name = item.Name })
+                @Html.ActionLink(item.Name, "ViewProductsInCategory", new { CategoryId = item.CategoryId, Name = item.Name })
             </td>
         </tr>
         }
