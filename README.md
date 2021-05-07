@@ -3,17 +3,21 @@
     Description: An eCommerce store project in the Fashion industry that utilizes the .NET Core, ASP.NET and MVC frameworks. 
 
 **#TO DO#**
+*Finished*
+- Error when viewing productlanding page with no images
+ - Either hide empty categories or solve the exception for Customer
+    - Basic Checkout Functionality
+
 
 *IMPORTANT*
-    - View Products by clicking on Product Name - ProductinCategories page.
+    - Copy changes from Customer Pages to other Views as well
 
-    - Either hide empty categories or solve the exception for Customer
-    - Clicking on Categories makes the cookies delayed.
-    - Basic Checkout Functionality
     - Order History page
-    - Total Cart Price
     - Logoff functionality
     - Register Account page
+    - Have increment, unique TransactionGroupIds that work properly. Add TransactionGroupIds to the ConfirmPurchase method
+    - Adjust Edit Address Html.Textbox to be bigger to see the entire address.
+    - Make shipping addresses saved with Transaction Groups
         
     - Discount price vs Total Price visible
     - Upload images for products

@@ -280,14 +280,42 @@ namespace eCommerceMVC.Controllers
             return View(modelTransactions);
         }
 
-        public IActionResult ViewOrderHistory()
+        public IActionResult ViewOrderHistory(List<Models.Transactions> transactions)
         {
-            return View();
+            return View(transactions);
         }
 
-        public IActionResult Checkout()
+        public IActionResult ViewCheckout(IFormCollection frm)
         {
-            return View();
+            string shippingAddress = frm["ShippingAddress"];
+            var tuple = _repository.RetrieveTransactions(1);
+            List<Transactions> transactions = tuple.Item1;
+            TempData["Subtotal"] = tuple.Item3;
+            List<Models.Transactions> modelTransactions = new List<Models.Transactions>();
+            Models.Transactions modTransac = new Models.Transactions();
+            foreach (var item in transactions)
+            {
+                modTransac = _mapper.Map<Models.Transactions>(item);
+                modelTransactions.Add(modTransac);
+            }
+            ViewBag.Message = tuple.Item2;
+            var tuple2 = _repository.FindUser(Request.Cookies["UserName"]);
+            if (shippingAddress == null)
+            {
+                HttpContext.Session.SetString("Address", tuple2.Item1.Address);
+                //TempData["Address"] = tuple2.Item1.Address;
+            } else
+            {
+                HttpContext.Session.SetString("Address", shippingAddress);
+            }
+            return View(modelTransactions);
+        }
+
+        //[System.Web.Mvc.ChildActionOnly]
+        public IActionResult EditAddress()
+        {
+
+            return PartialView();
         }
 
         public IActionResult DeleteTransaction(Transactions transaction)
@@ -303,6 +331,12 @@ namespace eCommerceMVC.Controllers
             {
                 return View("Failed");
             }
+        }
+
+        public IActionResult ConfirmPurchase()
+        {
+            _repository.ConfirmPurchase();
+            return View();
         }
     }
 }

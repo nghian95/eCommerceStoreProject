@@ -6,7 +6,11 @@
     ViewData["Title"] = "ViewProductLanding";
     Layout = "~/Views/Shared/_LayoutCustomer.cshtml";
     int count = Convert.ToInt32(httpContextAccessor.HttpContext.Request.Cookies["Count"]);
-    //int count2 = (int)TempData["Count"];
+    int count2 = (int)TempData["Count"];
+    if (count != count2)
+    {
+        count = count2;
+    }
 }
 
 <h2>&nbsp; @TempData["Name"] </h2>
@@ -34,7 +38,7 @@
                 @{ if (count != -1)
                     {
                         <div class="carousel-inner">
-                             @{
+                            @{
                                 for (int a = 0; a <= count; a++)
                                 {
                                     string var = "ImageID" + a;
@@ -61,6 +65,12 @@
                             <span class="carousel-control-next-icon" aria-hidden="true"></span>
                             <span class="sr-only">Next</span>
                         </a>
+                    }
+                    else
+                    {
+                        <div class="img-fluid">
+                            <img class="d-block w-100" src="~/images/noimageplaceholder.png" />
+                        </div>
                     }
                 }
             </div>

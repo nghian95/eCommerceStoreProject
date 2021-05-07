@@ -700,6 +700,37 @@ namespace eCommerceClassLibrary
             return (value, message);
         }
 
+        public (int, string) ConfirmPurchase()
+        {
+            int value = 0;
+            string message = "";
+            try
+            {
+                List<Transactions> justPurchased = _context.Transactions.Where(x => x.Status == 1).ToList();
+                foreach(Transactions transac in justPurchased)
+                {
+                    transac.Status = 2;
+                    _context.Update(transac);
+                }
+                _context.SaveChanges();
+                if (_context.Transactions.Find(justPurchased.FirstOrDefault().TransactionId).Status == 2)
+                {
+                    value = 1;
+                }
+                else
+                {
+                    value = -1;
+                    message = "Failed to Checkout";
+                }
+            }
+            catch (Exception ex)
+            {
+                value = -99;
+                message = ex.Message;
+            }
+            return (value, message);
+        }
+
         //public (int, string) AddToCart(Transactions transaction)
         //{
         //    int value = 0;
