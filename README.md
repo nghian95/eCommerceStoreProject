@@ -4,9 +4,6 @@
 
 **#TO DO#**
 *Finished*
-- Error when viewing productlanding page with no images
- - Either hide empty categories or solve the exception for Customer
-    - Basic Checkout Functionality
 
 
 *IMPORTANT*
@@ -15,8 +12,6 @@
     - Order History page
     - Logoff functionality
     - Register Account page
-    - Have increment, unique TransactionGroupIds that work properly. Add TransactionGroupIds to the ConfirmPurchase method
-    - Adjust Edit Address Html.Textbox to be bigger to see the entire address.
     - Make shipping addresses saved with Transaction Groups
         
     - Discount price vs Total Price visible

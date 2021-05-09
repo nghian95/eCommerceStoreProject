@@ -4,6 +4,8 @@
 
 @{
     ViewData["Title"] = "EditAddress";
+    string address = httpContextAccessor.HttpContext.Session.GetString("Address");
+
 }
 
 <div>
@@ -15,7 +17,8 @@
         <dd>
             <form asp-action="ViewCheckout">
                 <div class="form-group">
-                    @Html.TextBox("ShippingAddress", @httpContextAccessor.HttpContext.Session.GetString("Address"))
+                    @*@Html.TextBox("ShippingAddress", @httpContextAccessor.HttpContext.Session.GetString("Address"), )*@
+                    <input id="ShippingAddress" name="ShippingAddress" value="@address" style="width:250px"/>
                     <input type="submit" value="Save Address"/>
                 </div>
             </form>

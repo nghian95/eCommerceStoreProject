@@ -98,17 +98,16 @@
                     <td>
                     </td>
                     <td>
-                        @Html.ActionLink("Proceed to Checkout", "ViewCheckout")
+                        <button class="btn-primary">
+                            @Html.ActionLink("Proceed to Checkout", "ViewCheckout", "Customer", null, new { @class = "btn-primary" })
+                        </button>
                     </td>
                 </tr>
             }
 
 
         </tbody>
-
     </table>
-
-
 }
 else
 {

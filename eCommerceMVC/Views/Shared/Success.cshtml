@@ -2,14 +2,24 @@
 
 @{
     ViewData["Title"] = "View";
-    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    string backlink = httpContextAccessor.HttpContext.Request.Cookies["BackLink"];
+    switch (httpContextAccessor.HttpContext.Request.Cookies["Access"])
+    {
+        case "1":
+            Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+            break;
+        case "0":
+            Layout = "~/Views/Shared/_LayoutCustomer.cshtml";
+            break;
+    }
+
     var cookieCategory = httpContextAccessor.HttpContext.Request.Cookies["Category"];
     var cookieCategoryId = httpContextAccessor.HttpContext.Request.Cookies["CategoryId"];
-}
+    }
 
 <h2>Success!</h2>
 @{
-    switch (httpContextAccessor.HttpContext.Request.Cookies["BackLink"])
+    switch (backlink)
     {
         case "Products":
             <a asp-action="Products">Back to List of Products</a>

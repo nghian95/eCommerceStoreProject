@@ -91,15 +91,6 @@
                             <td>
                             </td>
                         </tr>
-                        <tr>
-                            <td>
-                            </td>
-                            <td>
-                            </td>
-                            <td>
-                                @Html.ActionLink("Place your order", "ViewCheckout")
-                            </td>
-                        </tr>
                     }
 
 
@@ -131,7 +122,14 @@
 
                             </div>
                         </td>
-                     </tr>
+                    </tr>
+                    <tr>
+                        <td style="text-align: right" >
+                            <button class="btn-primary">
+                                @Html.ActionLink("Place your order", "ConfirmPurchase", "Customer", null, new { @class = "btn-primary" })
+                            </button>
+                        </td>
+                    </tr>
                 </tbody>
 
             </table>

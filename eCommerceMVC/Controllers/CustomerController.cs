@@ -237,6 +237,10 @@ namespace eCommerceMVC.Controllers
 
         public IActionResult AddToCart(Models.Products product, IFormCollection frm)
         {
+            if (Request.Cookies["Access"] != "0")
+            {
+                return RedirectToAction("Login", "Home");
+            }
             Transactions transaction = new Transactions();
             transaction.Sku = product.Sku;
             transaction.UserName = Request.Cookies["UserName"];
@@ -260,6 +264,10 @@ namespace eCommerceMVC.Controllers
 
         public IActionResult SaveEditedQuantity(Models.Transactions transaction, IFormCollection frm)
         {
+            if (Request.Cookies["Access"] != "0")
+            {
+                return RedirectToAction("Login", "Home");
+            }
             int transactionID = transaction.TransactionId;
             int quantity = Convert.ToInt32(frm["Quantity"]);
             _repository.EditTransactionQuantity(transactionID, quantity);
@@ -270,9 +278,17 @@ namespace eCommerceMVC.Controllers
 
         public IActionResult ViewCart()
         {
+            if (Request.Cookies["Access"] != "0")
+            {
+                return RedirectToAction("Login", "Home");
+            }
             Response.Cookies.Append("BackLink", "Cart", _option);
             var tuple = _repository.RetrieveTransactions(1);
             List<Transactions> transactions = tuple.Item1;
+            if (transactions.Count == 0)
+            {
+                return View();
+            }
             TempData["Subtotal"] = tuple.Item3;
             List<Models.Transactions> modelTransactions = new List<Models.Transactions>();
             Models.Transactions modTransac = new Models.Transactions();
@@ -283,15 +299,24 @@ namespace eCommerceMVC.Controllers
             }
             ViewBag.Message = tuple.Item2;
             return View(modelTransactions);
+            
         }
 
         public IActionResult ViewOrderHistory(List<Models.Transactions> transactions)
         {
+            if (Request.Cookies["Access"] != "0")
+            {
+                return RedirectToAction("Login", "Home");
+            }
             return View(transactions);
         }
 
         public IActionResult ViewCheckout(IFormCollection frm)
         {
+            if (Request.Cookies["Access"] != "0")
+            {
+                return RedirectToAction("Login", "Home");
+            }
             string shippingAddress = frm["ShippingAddress"];
             var tuple = _repository.RetrieveTransactions(1);
             List<Transactions> transactions = tuple.Item1;
@@ -307,7 +332,10 @@ namespace eCommerceMVC.Controllers
             var tuple2 = _repository.FindUser(Request.Cookies["UserName"]);
             if (shippingAddress == null)
             {
-                HttpContext.Session.SetString("Address", tuple2.Item1.Address);
+                if (HttpContext.Session.GetString("Address") == null)
+                {
+                    HttpContext.Session.SetString("Address", tuple2.Item1.Address);
+                }
                 //TempData["Address"] = tuple2.Item1.Address;
             } else
             {
@@ -319,12 +347,19 @@ namespace eCommerceMVC.Controllers
         //[System.Web.Mvc.ChildActionOnly]
         public IActionResult EditAddress()
         {
-
+            if (Request.Cookies["Access"] != "0")
+            {
+                return RedirectToAction("Login", "Home");
+            }
             return PartialView();
         }
 
         public IActionResult DeleteTransaction(Transactions transaction)
         {
+            if (Request.Cookies["Access"] != "0")
+            {
+                return RedirectToAction("Login", "Home");
+            }
             eCommerceClassLibrary.Models.Transactions entityTransaction = _mapper.Map<eCommerceClassLibrary.Models.Transactions>(transaction);
             var tuple = _repository.DeleteTransaction(entityTransaction);
             int value = tuple.Item1;
@@ -340,8 +375,20 @@ namespace eCommerceMVC.Controllers
 
         public IActionResult ConfirmPurchase()
         {
-            _repository.ConfirmPurchase();
-            return View();
+            if (Request.Cookies["Access"] != "0")
+            {
+                return RedirectToAction("Login", "Home");
+            }
+            var tuple = _repository.ConfirmPurchase();
+            ViewBag.Message = tuple.Item2;
+            int value = tuple.Item1;
+            if (value == 1)
+            {
+                return View("Success");
+            } else
+            {
+                return View("Failed");
+            }
         }
     }
 }

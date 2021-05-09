@@ -40,7 +40,7 @@ SELECT * FROM Transactions
 SELECT * FROM Transactions
 
  UPDATE Transactions
- SET Name = 'Yellow Cotton Hoodie'
+ SET TransactionGroup = 1000
  WHERE SKU = 'CotnHD01-Y'
 
 EXEC sp_RENAME 'dbo.Transactions.TotalPrice', 'Price', 'COLUMN'

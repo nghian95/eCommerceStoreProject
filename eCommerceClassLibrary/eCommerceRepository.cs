@@ -574,7 +574,7 @@ namespace eCommerceClassLibrary
                 //transaction.TransactionGroup = ++max;
                 if (transaction.Status == 1)
                 {
-                    Transactions transac = _context.Transactions.Where(x => x.Sku == transaction.Sku).FirstOrDefault();
+                    Transactions transac = _context.Transactions.Where(x => x.Sku == transaction.Sku && x.Status == 1).FirstOrDefault();
                     if (transac != null)
                     {
                         if (transac.Quantity != null)
@@ -707,8 +707,10 @@ namespace eCommerceClassLibrary
             try
             {
                 List<Transactions> justPurchased = _context.Transactions.Where(x => x.Status == 1).ToList();
+                int? maxTransactionGroup = _context.Transactions.Max(x => x.TransactionGroup) + 1;
                 foreach(Transactions transac in justPurchased)
                 {
+                    transac.TransactionGroup = maxTransactionGroup;
                     transac.Status = 2;
                     _context.Update(transac);
                 }
