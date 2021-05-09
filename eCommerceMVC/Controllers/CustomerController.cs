@@ -390,5 +390,15 @@ namespace eCommerceMVC.Controllers
                 return View("Failed");
             }
         }
+
+        public IActionResult LogOut()
+        {
+            Response.Cookies.Append("Access", "-1", _option);
+            if (Request.Cookies["Access"] == "-1")
+            {
+                return View("LogOut");
+            }
+            return View();
+        }
     }
 }

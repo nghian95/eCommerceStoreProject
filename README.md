@@ -8,9 +8,8 @@
 
 *IMPORTANT*
     - Copy changes from Customer Pages to other Views as well
-
+    - Show sale price on AllProducts / ViewProductsInCategory
     - Order History page
-    - Logoff functionality
     - Register Account page
     - Make shipping addresses saved with Transaction Groups
         

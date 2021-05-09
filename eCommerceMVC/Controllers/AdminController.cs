@@ -333,9 +333,10 @@ namespace eCommerceMVC.Controllers
 
         public IActionResult LogOut()
         {
-            if (Request.Cookies["Access"] != "1")
+            Response.Cookies.Append("Access", "-1", option);
+            if (Request.Cookies["Access"] == "-1")
             {
-                return RedirectToAction("Login", "Home");
+                return View("LogOut");
             }
             return View();
         }
