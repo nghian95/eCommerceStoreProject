@@ -609,14 +609,14 @@ namespace eCommerceClassLibrary
             return (value, message);
         }
 
-        public (List<Transactions>, string, decimal?) RetrieveTransactions(int status)
+        public (List<Transactions>, string, decimal?) RetrieveTransactions(int status, string username)
         {
             List<Transactions> transactions = new List<Transactions>();
             string message = "";
             decimal? subtotal = 0;
             try
             {
-                transactions = _context.Transactions.Where(x => x.Status == status).ToList();
+                transactions = _context.Transactions.Where(x => x.Status == status && x.UserName == username).ToList();
                 foreach (Transactions transac in transactions)
                 {
                     subtotal += (transac.Quantity * transac.Price);
@@ -723,6 +723,32 @@ namespace eCommerceClassLibrary
                 {
                     value = -1;
                     message = "Failed to Checkout";
+                }
+            }
+            catch (Exception ex)
+            {
+                value = -99;
+                message = ex.Message;
+            }
+            return (value, message);
+        }
+
+        public (int, string) SaveRegisteredAccount(Users user)
+        {
+            int value = 0;
+            string message = "";
+            try
+            {
+                _context.Users.Add(user);
+                _context.SaveChanges();
+                if (_context.Users.Find(user.UserName) != null)
+                {
+                    value = 1;
+                }
+                else
+                {
+                    value = -1;
+                    message = "Failed to register user";
                 }
             }
             catch (Exception ex)

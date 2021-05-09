@@ -3,15 +3,20 @@
     Description: An eCommerce store project in the Fashion industry that utilizes the .NET Core, ASP.NET and MVC frameworks. 
 
 **#TO DO#**
-*Finished*
-
 
 *IMPORTANT*
     - Copy changes from Customer Pages to other Views as well
     - Show sale price on AllProducts / ViewProductsInCategory
     - Order History page
     - Register Account page
+        - Require address? Causing an exception in ViewCheckout due to no address.
+    - After successful register it makes next Backlink still Login
+    - AccountInfo show N/A for empty fields.
     - Make shipping addresses saved with Transaction Groups
+    - Dropdown menu for customer to see all their options (Account into AccountInfo, OrderHistory)
+    - Have proper validations for email, address, etc. (right # of characters, type of characters, etc)
+    - ViewCart and ViewCheckout have proper prices (sale discounted).
+    - Promo codes
         
     - Discount price vs Total Price visible
     - Upload images for products

@@ -18,6 +18,7 @@ namespace eCommerceMVC.Models
         public string LastName { get; set; }
         public string Address { get; set; }
         public int? Phone { get; set; }
+        [Required]
         public string Email { get; set; }
     }
 }

@@ -79,32 +79,31 @@
                         @Html.ActionLink("Delete", "DeleteTransaction", item)
                     </td>
                 </tr>
-                <tr>
-                    <td>
-                    </td>
-                    <td>
-                    </td>
-                    <td>
-                        <b>Subtotal:</b> $@TempData["Subtotal"]
-                    </td>
-                    <td>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                    </td>
-                    <td>
-                    </td>
-                    <td>
-                    </td>
-                    <td>
-                        <button class="btn-primary">
-                            @Html.ActionLink("Proceed to Checkout", "ViewCheckout", "Customer", null, new { @class = "btn-primary" })
-                        </button>
-                    </td>
-                </tr>
             }
-
+            <tr>
+                <td>
+                </td>
+                <td>
+                </td>
+                <td>
+                    <b>Subtotal:</b> $@TempData["Subtotal"]
+                </td>
+                <td>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                </td>
+                <td>
+                </td>
+                <td>
+                </td>
+                <td>
+                    <button class="btn-primary">
+                        @Html.ActionLink("Proceed to Checkout", "ViewCheckout", "Customer", null, new { @class = "btn-primary" })
+                    </button>
+                </td>
+            </tr>
 
         </tbody>
     </table>

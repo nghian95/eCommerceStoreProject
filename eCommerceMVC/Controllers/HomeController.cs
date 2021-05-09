@@ -192,7 +192,27 @@ namespace eCommerceMVC.Controllers
             }
         }
 
-        
+        public IActionResult Register()
+        {
+            Response.Cookies.Append("BackLink", "Login", _option);
+            return View();
+        }
+
+        public IActionResult SaveRegisteredAccount(Users user)
+        {
+            //TempData["BackLink"] = "Login";
+            eCommerceClassLibrary.Models.Users entityUser = _mapper.Map<eCommerceClassLibrary.Models.Users>(user);
+            var tuple = _repository.SaveRegisteredAccount(entityUser);
+            int value = tuple.Item1;
+            if (value == 1)
+            {
+                return View("Success");
+            } else
+            {
+                return View("Failed");
+            }
+
+        }
 
     }
 }

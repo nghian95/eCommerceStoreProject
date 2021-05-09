@@ -249,7 +249,7 @@ namespace eCommerceMVC.Controllers
             transaction.Price = product.Price;
             transaction.Name = product.Name;
             _repository.AddTransaction(transaction);
-            var tuple = _repository.RetrieveTransactions(1);
+            var tuple = _repository.RetrieveTransactions(1, transaction.UserName);
             List<Transactions> transactions = tuple.Item1;
             ViewBag.Message = tuple.Item2;
             Models.Transactions modelTransaction = new Models.Transactions();
@@ -283,7 +283,7 @@ namespace eCommerceMVC.Controllers
                 return RedirectToAction("Login", "Home");
             }
             Response.Cookies.Append("BackLink", "Cart", _option);
-            var tuple = _repository.RetrieveTransactions(1);
+            var tuple = _repository.RetrieveTransactions(1, Request.Cookies["UserName"]);
             List<Transactions> transactions = tuple.Item1;
             if (transactions.Count == 0)
             {
@@ -318,7 +318,13 @@ namespace eCommerceMVC.Controllers
                 return RedirectToAction("Login", "Home");
             }
             string shippingAddress = frm["ShippingAddress"];
-            var tuple = _repository.RetrieveTransactions(1);
+            eCommerceClassLibrary.Models.Users user = _repository.FindUser(Request.Cookies["UserName"]).Item1;
+            if (user.Address == null)
+            {
+                user.Address = shippingAddress;
+                _repository.EditUser(user);
+            }
+            var tuple = _repository.RetrieveTransactions(1, Request.Cookies["UserName"]);
             List<Transactions> transactions = tuple.Item1;
             TempData["Subtotal"] = tuple.Item3;
             List<Models.Transactions> modelTransactions = new List<Models.Transactions>();
@@ -334,7 +340,13 @@ namespace eCommerceMVC.Controllers
             {
                 if (HttpContext.Session.GetString("Address") == null)
                 {
-                    HttpContext.Session.SetString("Address", tuple2.Item1.Address);
+                    if (tuple2.Item1.Address != null)
+                    {
+                        HttpContext.Session.SetString("Address", tuple2.Item1.Address);
+                    } else
+                    {
+                        HttpContext.Session.SetString("Address", "No address found");
+                    }
                 }
                 //TempData["Address"] = tuple2.Item1.Address;
             } else
@@ -399,6 +411,21 @@ namespace eCommerceMVC.Controllers
                 return View("LogOut");
             }
             return View();
+        }
+
+        public IActionResult OrderHistory()
+        {
+            var tuple = _repository.RetrieveTransactions(2 , Request.Cookies["UserName"]);
+            List<Transactions> transactions = tuple.Item1;
+            ViewBag.Message = tuple.Item2;
+            List<Models.Transactions> modelTransactions = new List<Models.Transactions>();
+            Models.Transactions modTransac = null;
+            foreach (Transactions transac in transactions)
+            {
+                modTransac = _mapper.Map<Models.Transactions>(transac);
+                modelTransactions.Add(modTransac);
+            }
+            return View(modelTransactions);
         }
     }
 }

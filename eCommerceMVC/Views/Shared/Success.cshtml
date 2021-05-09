@@ -15,7 +15,12 @@
 
     var cookieCategory = httpContextAccessor.HttpContext.Request.Cookies["Category"];
     var cookieCategoryId = httpContextAccessor.HttpContext.Request.Cookies["CategoryId"];
-    }
+
+    //if(TempData["BackLink"] != null)
+    //{
+    //    backlink = (string)TempData["BackLink"];
+    //}
+}
 
 <h2>Success!</h2>
 @{
@@ -25,13 +30,13 @@
             <a asp-action="Products">Back to List of Products</a>
             break;
         case "SpecificCategory":
-            <a asp-action="ViewProductsInCategory" asp-route-categoryId="@cookieCategoryId" asp-route-Name="@cookieCategory">Back to Category</a>
+            <a asp-action="ViewProductsInCategory" asp-route-categoryId="@cookieCategoryId" asp-route-Name="@cookieCategory">Back to @cookieCategory</a>
             break;
         case "Categories":
             <a asp-action="Categories">Back to List of Categories</a>
             break;
         case "ViewProductLanding":
-            <a asp-action="ViewProductLanding" asp-controller="Admin" asp-route-sku=@TempData["Sku"]>Back to Product</a>
+            <a asp-action="ViewProductLanding" asp-route-sku=@TempData["Sku"]>Back to Product Landing</a>
             break;
         case "AccountInfo":
             <a asp-action="AccountInfo" asp-controller="Customer">Back to Account Info</a>
@@ -39,8 +44,11 @@
         case "Cart":
             <a asp-action="ViewCart" asp-controller="Customer">Back to the Shopping Cart</a>
             break;
+        case "Login":
+            <a asp-action="Login" asp-controller="Home">Back to the Login</a>
+            break;
         default:
-            <a asp-action="Categories">Back to List</a>
+            <a asp-action="HomePage">Back to Home Page</a>
             break;
     }
 }
