@@ -35,12 +35,12 @@ namespace eCommerceMVC
             services.AddAutoMapper(x => x.AddProfile(new eCommerceMapper()));
             services.AddHttpContextAccessor();
             services.AddSession();
-            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options =>
-            {
-                options.LoginPath = "/Home/Login";
-                options.LogoutPath = "/Home/LogOut";
-                options.Cookie.Name = "Our_Unique_Cookie";
-            });
+            //services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options =>
+            //{
+            //    options.LoginPath = "/Home/Login";
+            //    options.LogoutPath = "/Home/LogOut";
+            //    options.Cookie.Name = "Our_Unique_Cookie";
+            //});
             //services.Configure<CookiePolicyOptions>(options =>
             //{
             //    options.CheckConsentNeeded = context => true;
@@ -52,7 +52,6 @@ namespace eCommerceMVC
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            app.UseSession();
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -65,10 +64,11 @@ namespace eCommerceMVC
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
+            app.UseSession();
+            app.UseCookiePolicy();
             app.UseRouting();
 
-            app.UseAuthorization();
+            //app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
@@ -77,7 +77,8 @@ namespace eCommerceMVC
                     pattern: "{controller=Home}/{action=HomePage}/{id?}");
             });
 
-            app.UseAuthentication();
+
+            //app.UseAuthentication();
 
 
         }

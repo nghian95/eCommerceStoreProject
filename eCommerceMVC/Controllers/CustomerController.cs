@@ -14,11 +14,14 @@ namespace eCommerceMVC.Controllers
     {
         private readonly eCommerceRepository _repository;
         private readonly IMapper _mapper;
-        private  CookieOptions _option = new CookieOptions()
+        private readonly CookieOptions _option = new CookieOptions()
         {
             IsEssential = true,
             Secure = true,
-            SameSite = SameSiteMode.None
+            SameSite = SameSiteMode.None,
+            Path = "/",
+            HttpOnly = false,
+            Expires = DateTime.Now.AddMonths(1)
         };
 
         public CustomerController(eCommerceRepository repository, IMapper mapper)
@@ -119,6 +122,7 @@ namespace eCommerceMVC.Controllers
 
         public IActionResult ViewProductsInCategory(Models.Categories category)
         {
+
             if (Request.Cookies["Access"] != "0")
             {
                 return RedirectToAction("ViewProductsInCategory", "Home");
@@ -133,53 +137,54 @@ namespace eCommerceMVC.Controllers
             //    });
             //} else
             //{
-                Response.Cookies.Append("BackLink", "SpecificCategory", _option);
+            //CookieOptions cookieOptions = new CookieOptions();
+            Response.Cookies.Append("BackLink", "SpecificCategory", _option);
 
-                var tuple = _repository.FindImageIdsForCategory(category.CategoryId);
-                List<int> imageIds = tuple.Item1;
-                if (imageIds != null)
+            var tuple = _repository.FindImageIdsForCategory(category.CategoryId);
+            List<int> imageIds = tuple.Item1;
+            if (imageIds != null)
+            {
+                int num = 0;
+                foreach (var id in tuple.Item1)
                 {
-                    int num = 0;
-                    foreach (var id in tuple.Item1)
-                    {
-                        ViewData["Image" + num] = id;
-                        num++;
-                    }
+                    ViewData["Image" + num] = id;
+                    num++;
                 }
-                ViewBag.Message = tuple.Item2;
+            }
+            ViewBag.Message = tuple.Item2;
 
-                Categories entityCategory = _mapper.Map<Categories>(category);
-                var result = _repository.ViewProductsInCategory(entityCategory);
-                List<Products> entityProducts = result.Item1;
-                ViewBag.Message += result.Item2;
-                List<Models.Products> modelProducts = new List<Models.Products>();
-                Models.Products modelProduct = null;
-                foreach (var product in entityProducts)
-                {
-                    modelProduct = _mapper.Map<Models.Products>(product);
-                    modelProducts.Add(modelProduct);
-                }
-                var categoryName0 = category.Name;
-                var categoryID0 = category.CategoryId;
-                TempData["Category"] = category.Name;
-                Response.Cookies.Delete("Category");
-                Response.Cookies.Append("Category", category.Name, _option);
-                Response.Cookies.Append("CategoryId", "" + category.CategoryId, _option);
-                //if (Request.Cookies["Category"] != category.Name)
-                //{
-                //    ViewProductsInCategory(category);
-                //}
-                var categoryName = Request.Cookies["Category"];
-                var categoryID = Request.Cookies["CategoryId"];
-                if (modelProducts.Count == 0)
-                {
-                    List<Models.Products> products = new List<Models.Products>();
-                    return View(products);
-                }
-                else
-                {
-                    return View(modelProducts);
-                }
+            Categories entityCategory = _mapper.Map<Categories>(category);
+            var result = _repository.ViewProductsInCategory(entityCategory);
+            List<Products> entityProducts = result.Item1;
+            ViewBag.Message += result.Item2;
+            List<Models.Products> modelProducts = new List<Models.Products>();
+            Models.Products modelProduct = null;
+            foreach (var product in entityProducts)
+            {
+                modelProduct = _mapper.Map<Models.Products>(product);
+                modelProducts.Add(modelProduct);
+            }
+            var categoryName0 = category.Name;
+            var categoryID0 = category.CategoryId;
+            TempData["Category"] = category.Name;
+            TempData["CategoryId"] = category.CategoryId;
+            Response.Cookies.Append("Category",category.Name, _option);
+            Response.Cookies.Append("CategoryId",""+category.CategoryId, _option);
+            //if (Request.Cookies["Category"] != category.Name)
+            //{
+            //    ViewProductsInCategory(category);
+            //}
+            var categoryName = Request.Cookies["Category"];
+            var categoryID = Request.Cookies["CategoryId"];
+            if (modelProducts.Count == 0)
+            {
+                List<Models.Products> products = new List<Models.Products>();
+                return View(products);
+            }
+            else
+            {
+                return View(modelProducts);
+            }
             //}
         }
 
@@ -216,7 +221,7 @@ namespace eCommerceMVC.Controllers
                 return RedirectToAction("Login", "Home");
             }
             Response.Cookies.Append("BackLink", "Categories", _option);
-
+            //Response.Cookies.Append("Category", "Empty", _option);
             var result = _repository.ViewCategories();
             List<Categories> categories = result.Item1;
             ViewBag.Message = result.Item2;

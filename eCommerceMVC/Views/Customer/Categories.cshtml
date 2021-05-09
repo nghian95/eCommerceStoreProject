@@ -4,9 +4,6 @@
 @{
     ViewData["Title"] = "Categories";
     Layout = "~/Views/Shared/_LayoutCustomer.cshtml";
-    var categories = httpContextAccessor.HttpContext.Request.Cookies["Category"];
-    var cookieCategoryId = Int32.Parse(httpContextAccessor.HttpContext.Request.Cookies["CategoryId"]);
-    var cookieCategory = categories.Substring(0, categories.Length - 1);
 }
 
 <h2>Categories</h2>

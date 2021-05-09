@@ -1,3 +1,5 @@
+CREATE DATABASE eCommerceDB
+
 USE [eCommerceDB]
 GO
 
