@@ -98,23 +98,43 @@
                         </dd>
                     }
                 }
-                @{ if (@Model.Price != null)
+                @{ if (@Model.Price != null && Model.Sale == null)
                     {
                         <dt>
-                            @Html.DisplayNameFor(model => model.Price)
+                            Original @Html.DisplayNameFor(model => model.Price)
                         </dt>
-                        <dd>
-                            @Html.DisplayFor(model => model.Price)
-                        </dd>
+                        if (Model.Sale != null)
+                        {
+                            <dd style="text-decoration:line-through">
+                                $@Html.DisplayFor(model => model.Price)
+                            </dd>
+                        }
+                        else
+                        {
+                            <dd>
+                                $@Html.DisplayFor(model => model.Price)
+                            </dd>
+                        }
                     }
                 }
                 @{ if (@Model.Sale != null)
                     {
                         <dt>
-                            @Html.DisplayNameFor(model => model.Sale)
+                            @Html.DisplayNameFor(model => model.Sale) Price - $@Html.DisplayFor(model => model.Sale)% OFF
                         </dt>
                         <dd>
-                            @Html.DisplayFor(model => model.Sale)% OFF
+
+                            @{ if (@Model.Sale != 0 && @Model.Sale != null)
+                                {
+                                    decimal salePrice = (@Model.Price - (@Model.Price * (decimal?)(@Model.Sale) / 100)) ?? 0;
+                                    <div>$@Math.Round(salePrice, 2)</div> 
+                                    <div style="text-decoration:line-through; opacity:.5">$@Model.Price</div>
+                                }
+                                else
+                                {
+                                    <div>$@Model.Price</div>
+                                }
+                            }
                         </dd>
                     }
                 }

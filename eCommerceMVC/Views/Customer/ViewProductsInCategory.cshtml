@@ -49,33 +49,34 @@
 @{
     if (Model != null && Model.Count() != 0)
     {
-        <div>
-            @{int num = 0; }
-            @foreach (var item in Model)
+    <div>
+        @{int num = 0; }
+        @foreach (var item in Model)
+        {
+            var name = "Image" + num;
+            num++;
+
+            if (@ViewData[name] != null)
             {
-                var name = "Image" + num;
-                num++;
-
-                if (@ViewData[name] != null)
-                {
-                    <div>
-                        <img class="w-25" src="@Url.Action("show", "image", new { id = (int)@ViewData[name] })" alt="Product's Picture">
-                    </div>
-                }
-
                 <div>
-                    @Html.ActionLink(item.Name, "ViewProductLanding", item)
-                </div>
-                <div>
-                    @Html.DisplayNameFor(model => model.Quantity):
-                    @Html.DisplayFor(modelItem => item.Quantity)
-                </div>
-                <div>
-                    @Html.DisplayNameFor(model => model.Price):
-                    @Html.DisplayFor(modelItem => item.Price)
+                    <img class="w-25" src="@Url.Action("show", "image", new { id = (int)@ViewData[name] })" alt="Product's Picture">
                 </div>
             }
-        </div>
+
+            <div>
+                @Html.ActionLink(item.Name, "ViewProductLanding", item)
+            </div>
+            <div>
+                @Html.DisplayNameFor(model => model.Quantity):
+                @Html.DisplayFor(modelItem => item.Quantity)
+            </div>
+            <div>
+                Original @Html.DisplayNameFor(model => model.Price):
+                $@Html.DisplayFor(modelItem => item.Price)
+            </div>
+            <br />
+        }
+    </div>
     }
     else
     {

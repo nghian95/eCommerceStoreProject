@@ -4,37 +4,26 @@
 
 **#TO DO#**
 
+*FINISHED*
+
 *IMPORTANT*
     - Copy changes from Customer Pages to other Views as well
-    - Show sale price on AllProducts / ViewProductsInCategory
-    - Order History page
-    - Register Account page
-        - Require address? Causing an exception in ViewCheckout due to no address.
-    - After successful register it makes next Backlink still Login
+  
     - AccountInfo show N/A for empty fields.
     - Make shipping addresses saved with Transaction Groups
-    - Dropdown menu for customer to see all their options (Account into AccountInfo, OrderHistory)
-    - Have proper validations for email, address, etc. (right # of characters, type of characters, etc)
-    - ViewCart and ViewCheckout have proper prices (sale discounted).
+    - Explore dropdown menus (i.e. for CategoryId when adding product)
+        - Dropdown menu for customer to see all their options (Account into AccountInfo, OrderHistory)
+    - Set up Data Annotations for min/max string length, type, etc. for models
+        - Have proper validations for email, address, etc. (right # of characters, type of characters, etc)
     - Promo codes
         
-    - Discount price vs Total Price visible
     - Upload images for products
     - Admin page of Product Landing should have rearrange images, delete product, duplicate product.
-    - Explore dropdown menus (i.e. for CategoryId when adding product)
-    - Create Pages
-        - Customer Pages
-    - Create sessions that store user info.
-    - Differentiate no-user pages and customer pages
-    - Set up Data Annotations for min/max string length, type, etc. for models
-    - Logout
+
     - Users can leave reviews
     - Coupon / News Banner at top
     - newsletter sign up for customer / new unregistered user
     - Wishlist
-    - Table of Past Transactions
-    - Account History / Order History
-    -
 
 *BUGS*
 

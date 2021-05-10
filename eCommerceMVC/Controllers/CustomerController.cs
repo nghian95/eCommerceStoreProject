@@ -246,7 +246,7 @@ namespace eCommerceMVC.Controllers
             transaction.UserName = Request.Cookies["UserName"];
             transaction.Status = 1;
             transaction.Quantity = Convert.ToInt32(frm["amount"]);
-            transaction.Price = product.Price;
+            transaction.Price = product.Price - (product.Price * (decimal?)(product.Sale) / 100);
             transaction.Name = product.Name;
             _repository.AddTransaction(transaction);
             var tuple = _repository.RetrieveTransactions(1, transaction.UserName);
@@ -289,7 +289,8 @@ namespace eCommerceMVC.Controllers
             {
                 return View();
             }
-            TempData["Subtotal"] = tuple.Item3;
+            decimal subtotal = Math.Round((tuple.Item3 ?? 0), 2);
+            TempData["Subtotal"] = subtotal;
             List<Models.Transactions> modelTransactions = new List<Models.Transactions>();
             Models.Transactions modTransac = new Models.Transactions();
             foreach (var item in transactions)

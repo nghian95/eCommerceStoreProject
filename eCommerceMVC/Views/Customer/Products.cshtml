@@ -20,11 +20,11 @@
             <th>
                 @Html.DisplayNameFor(model => model.Description)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Price)
+            <th hidden>
+                Original @Html.DisplayNameFor(model => model.Price)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Sale)
+                @Html.DisplayNameFor(model => model.Sale) Price
             </th>
             <th></th>
         </tr>
@@ -42,13 +42,31 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.Description)
                 </td>
+
+                    @{ 
+                        if(item.Sale == null)
+                        {
+                            <td hidden>$@Html.DisplayFor(modelItem => item.Price)</td>
+                        } else
+                        {
+                            <td style="text-decoration:line-through" hidden>$@Html.DisplayFor(modelItem => item.Price)</td>
+                        }
+                    }
+
+
                 <td>
-                    @Html.DisplayFor(modelItem => item.Price)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Sale)
+                    @{ 
+                        decimal salePrice = (item.Price - (item.Price * (decimal?)(item.Sale) / 100))??0;
+                        if (item.Sale != 0 && item.Sale != null)
+                        {
+                           <div>$@Math.Round(salePrice, 2)</div>
+                        } else
+                        {
+                          <div>$@item.Price</div>
+                        }
+                    }
                 </td>
             </tr>
-        }
+                        }
     </tbody>
 </table>
