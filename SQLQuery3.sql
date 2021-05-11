@@ -21,8 +21,11 @@ CREATE TABLE Transactions
 )
 
 ALTER TABLE Transactions 
-    --ADD Name VARCHAR(40) NOT NULL DEFAULT '';
-    ADD FOREIGN KEY (Name) REFERENCES Products(Name);
+    ADD ShippingAddress VARCHAR(100) NOT NULL DEFAULT '';
+    --ADD FOREIGN KEY (Name) REFERENCES Products(Name);
+
+--ALTER TABLE Transactions
+--    ALTER COLUMN ShippingAddress DROP DEFAULT;
 
 INSERT INTO Images (ImageName, OriginalFormat, ImageFile, SKU) SELECT
 

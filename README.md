@@ -6,16 +6,17 @@
 
 *FINISHED*
 
+
 *IMPORTANT*
     - Copy changes from Customer Pages to other Views as well
-  
-    - AccountInfo show N/A for empty fields.
-    - Make shipping addresses saved with Transaction Groups
+    - Stay on ViewCart after deleting items (maybe a small success window or integrated partial view)
+        Right now it's going to a separate Success page each time.
     - Explore dropdown menus (i.e. for CategoryId when adding product)
         - Dropdown menu for customer to see all their options (Account into AccountInfo, OrderHistory)
     - Set up Data Annotations for min/max string length, type, etc. for models
         - Have proper validations for email, address, etc. (right # of characters, type of characters, etc)
     - Promo codes
+    - Order History should be restructured to separate the different purchases more clearly and show the subtotal.
         
     - Upload images for products
     - Admin page of Product Landing should have rearrange images, delete product, duplicate product.

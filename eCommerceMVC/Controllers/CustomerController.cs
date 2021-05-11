@@ -246,8 +246,15 @@ namespace eCommerceMVC.Controllers
             transaction.UserName = Request.Cookies["UserName"];
             transaction.Status = 1;
             transaction.Quantity = Convert.ToInt32(frm["amount"]);
-            transaction.Price = product.Price - (product.Price * (decimal?)(product.Sale) / 100);
+            double notNullSale = product.Sale ?? 0;
+            double notNullPrice = (double) (product.Price ?? 0);
+            transaction.Price = (decimal?)(notNullPrice - (notNullPrice * notNullSale / 100)) ;
             transaction.Name = product.Name;
+            Users user = _repository.FindUser(Request.Cookies["UserName"]).Item1;
+            if (user.Address != null)
+            {
+                transaction.ShippingAddress = user.Address;
+            }
             _repository.AddTransaction(transaction);
             var tuple = _repository.RetrieveTransactions(1, transaction.UserName);
             List<Transactions> transactions = tuple.Item1;
@@ -327,11 +334,16 @@ namespace eCommerceMVC.Controllers
             }
             var tuple = _repository.RetrieveTransactions(1, Request.Cookies["UserName"]);
             List<Transactions> transactions = tuple.Item1;
-            TempData["Subtotal"] = tuple.Item3;
+            decimal subtotal = Math.Round((tuple.Item3 ?? 0), 2);
+            TempData["Subtotal"] = subtotal;
             List<Models.Transactions> modelTransactions = new List<Models.Transactions>();
             Models.Transactions modTransac = new Models.Transactions();
             foreach (var item in transactions)
             {
+                if (shippingAddress != null)
+                {
+                    item.ShippingAddress = shippingAddress;
+                }
                 modTransac = _mapper.Map<Models.Transactions>(item);
                 modelTransactions.Add(modTransac);
             }
@@ -347,6 +359,12 @@ namespace eCommerceMVC.Controllers
                     } else
                     {
                         HttpContext.Session.SetString("Address", "No address found");
+                    }
+                } else
+                {
+                    if (tuple2.Item1.Address != null && HttpContext.Session.GetString("Address") != tuple2.Item1.Address) 
+                    {
+                        HttpContext.Session.SetString("Address", tuple2.Item1.Address);
                     }
                 }
                 //TempData["Address"] = tuple2.Item1.Address;
@@ -428,5 +446,6 @@ namespace eCommerceMVC.Controllers
             }
             return View(modelTransactions);
         }
+
     }
 }

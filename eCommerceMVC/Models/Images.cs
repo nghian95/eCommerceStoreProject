@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace eCommerceMVC.Models
 {
-    public class Images
+    public partial class Images
     {
         public int ImageId { get; set; }
         public string ImageName { get; set; }

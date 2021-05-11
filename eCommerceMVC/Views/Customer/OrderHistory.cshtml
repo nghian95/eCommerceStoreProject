@@ -3,6 +3,7 @@
 @{
     ViewData["Title"] = "OrderHistory";
     Layout = "~/Views/Shared/_LayoutCustomer.cshtml";
+    int? previousTransactionGroup = 0;
 }
 
 <h2>Order History</h2>
@@ -13,9 +14,15 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.TransactionId)
+                Transaction Group
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th hidden>
+                @Html.DisplayNameFor(model => model.TransactionId)
+            </th>
+            <th hidden>
                 @Html.DisplayNameFor(model => model.Sku)
             </th>
             <th>
@@ -24,56 +31,99 @@
             <th>
                 @Html.DisplayNameFor(model => model.Price)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TransactionGroup)
-            </th>
-            <th>
+            <th hidden>
                 @Html.DisplayNameFor(model => model.UserName)
             </th>
-            <th>
+            <th hidden>
                 @Html.DisplayNameFor(model => model.Status)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Name)
+                @Html.DisplayNameFor(model => model.ShippingAddress)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model)
-{
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.TransactionId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Sku)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Quantity)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Price)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TransactionGroup)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UserName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Status)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ })
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+        @foreach (var item in Model)
+        {
+            if (previousTransactionGroup == item.TransactionGroup)
+            {
+                <tr>
+                    <td>
+                    </td>
+                    <td hidden>
+                        @Html.DisplayFor(modelItem => item.TransactionGroup)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td hidden>
+                        @Html.DisplayFor(modelItem => item.TransactionId)
+                    </td>
+                    <td hidden>
+                        @Html.DisplayFor(modelItem => item.Sku)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Quantity)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Price)
+                    </td>
+                    <td hidden>
+                        @Html.DisplayFor(modelItem => item.UserName)
+                    </td>
+                    <td hidden>
+                        @Html.DisplayFor(modelItem => item.Status)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ShippingAddress)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ })
+                    </td>
+                </tr>
+            
+            }
+            else
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TransactionGroup)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td hidden>
+                        @Html.DisplayFor(modelItem => item.TransactionId)
+                    </td>
+                    <td hidden>
+                        @Html.DisplayFor(modelItem => item.Sku)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Quantity)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Price)
+                    </td>
+                    <td hidden>
+                        @Html.DisplayFor(modelItem => item.UserName)
+                    </td>
+                    <td hidden>
+                        @Html.DisplayFor(modelItem => item.Status)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ShippingAddress)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ })
+                    </td>
+                </tr>
+            }
+
+        previousTransactionGroup = item.TransactionGroup;
+    }
+        </tbody>
+    </table>
 }
 else
 {

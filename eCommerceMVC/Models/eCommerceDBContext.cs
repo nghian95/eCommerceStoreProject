@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
-namespace eCommerceClassLibrary.Models
+namespace eCommerceMVC.Models
 {
     public partial class eCommerceDBContext : DbContext
     {

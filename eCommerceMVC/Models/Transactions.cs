@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace eCommerceMVC.Models
 {
@@ -15,6 +13,7 @@ namespace eCommerceMVC.Models
         public string UserName { get; set; }
         public int? Status { get; set; }
         public string Name { get; set; }
+        public string ShippingAddress { get; set; }
 
         public Products SkuNavigation { get; set; }
         public Users UserNameNavigation { get; set; }
