@@ -612,6 +612,7 @@ namespace eCommerceClassLibrary
         public (List<Transactions>, string, decimal?) RetrieveTransactions(int status, string username)
         {
             List<Transactions> transactions = new List<Transactions>();
+            List<Transactions> removeTransactions = new List<Transactions>();
             string message = "";
             decimal? subtotal = 0;
             try
@@ -619,8 +620,14 @@ namespace eCommerceClassLibrary
                 transactions = _context.Transactions.Where(x => x.Status == status && x.UserName == username).ToList();
                 foreach (Transactions transac in transactions)
                 {
+                    if (transac.Status == 3)
+                    {
+                        removeTransactions.Add(transac);
+                    }
                     subtotal += (transac.Quantity * transac.Price);
                 }
+                _context.Transactions.RemoveRange(removeTransactions);
+                _context.SaveChanges();
                 if (transactions != null)
                 {
                     message = "Successful";
@@ -644,9 +651,17 @@ namespace eCommerceClassLibrary
             try
             {
                 Transactions testTransaction = _context.Transactions.Find(transaction.TransactionId);
-                _context.Transactions.Remove(testTransaction);
+                if (testTransaction.Status == 1)
+                {
+                    testTransaction.Status = 3;
+                    _context.Transactions.Update(testTransaction);
+                } else
+                {
+                    _context.Transactions.Remove(testTransaction);
+                }
                 _context.SaveChanges();
-                if (_context.Transactions.Find(transaction.TransactionId) == null)
+                Transactions newTransaction = _context.Transactions.Find(transaction.TransactionId);
+                if (newTransaction == null || newTransaction.Status == 3)
                 {
                     value = 1;
                 }

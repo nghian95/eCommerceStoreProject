@@ -291,7 +291,9 @@ namespace eCommerceMVC.Controllers
             }
             Response.Cookies.Append("BackLink", "Cart", _option);
             var tuple = _repository.RetrieveTransactions(1, Request.Cookies["UserName"]);
+            var tuple2 = _repository.RetrieveTransactions(3, Request.Cookies["UserName"]);
             List<Transactions> transactions = tuple.Item1;
+            transactions.AddRange(tuple2.Item1);
             if (transactions.Count == 0)
             {
                 return View();
@@ -385,7 +387,7 @@ namespace eCommerceMVC.Controllers
             return PartialView();
         }
 
-        public IActionResult DeleteTransaction(Transactions transaction)
+        public IActionResult DeleteTransaction(Models.Transactions transaction)
         {
             if (Request.Cookies["Access"] != "0")
             {
@@ -397,10 +399,10 @@ namespace eCommerceMVC.Controllers
             ViewBag.Message = tuple.Item2;
             if (value == 1)
             {
-                return View("Success");
+                return RedirectToAction("ViewCart");
             } else
             {
-                return View("Failed");
+                return PartialView("PartialFailed");
             }
         }
 

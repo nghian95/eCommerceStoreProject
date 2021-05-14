@@ -3,7 +3,17 @@
 @{
     ViewData["Title"] = "ViewCart";
     Layout = "~/Views/Shared/_LayoutCustomer.cshtml";
+    //eCommerceMVC.Models.Transactions modelItem = null;
 }
+
+@*@section scripts{
+    <script>
+        var url = '@Url.Action("DeleteTransaction", "Customer", modelItem)';
+        $('.delete').click(function() {
+            $('.deleteField').load(url);
+        })
+    </script>
+}*@
 
 <h2>View Cart</h2>
 @if (Model != null && Model.Count() != 0)
@@ -38,47 +48,66 @@
         <tbody>
             @foreach (var item in Model)
             {
+                if (item.Status != 3)
+                {
+                    <tr>
+                        <td hidden>
+                            @Html.DisplayFor(modelItem => item.TransactionId)
+                        </td>
+                        <td>
+                            @{
+                                Products product = new Products();
+                                product.Sku = item.Sku;
+                                product.Name = item.Name;
+                            }
+                            @Html.ActionLink(item.Name, "ViewProductLanding", "Customer", product)
+                        </td>
+                        <td>
+                            @*@Html.DisplayFor(modelItem => item.Quantity)*@
+                            <form asp-action="SaveEditedQuantity" asp-route-TransactionId=@item.TransactionId asp-route-Price=@item.Price>
+                                <div class="form-group">
+                                    @*<label asp-for=@item.Quantity class="control-label"></label>*@
+                                    @*<input asp-for=@item.Quantity class="form-control" />*@
+                                    @Html.TextBox("Quantity", item.Quantity)
+                                    <span asp-validation-for=@item.Quantity class="text-danger"></span>
+                                    <input type="submit" value="Update" />
+                                </div>
+                            </form>
+                        </td>
+                        <td>
+                            $@Html.DisplayFor(modelItem => item.Price)
+                        </td>
+                        <td hidden>
+                            @Html.DisplayFor(modelItem => item.TransactionGroup)
+                        </td>
+                        <td hidden>
+                            @Html.DisplayFor(modelItem => item.UserName)
+                        </td>
+                        <td hidden>
+                            @Html.DisplayFor(modelItem => item.Status)
+                        </td>
+                        <td>
 
-                <tr>
-                    <td hidden>
-                        @Html.DisplayFor(modelItem => item.TransactionId)
-                    </td>
-                    <td>
-                        @{
-                            Products product = new Products();
-                            product.Sku = item.Sku;
-                            product.Name = item.Name;
-                        }
-                        @Html.ActionLink(item.Name, "ViewProductLanding", "Customer", product)
-                    </td>
-                    <td>
-                        @*@Html.DisplayFor(modelItem => item.Quantity)*@
-                        <form asp-action="SaveEditedQuantity" asp-route-TransactionId=@item.TransactionId asp-route-Price=@item.Price>
-                            <div class="form-group">
-                                @*<label asp-for=@item.Quantity class="control-label"></label>*@
-                                @*<input asp-for=@item.Quantity class="form-control" />*@
-                                @Html.TextBox("Quantity", item.Quantity)
-                                <span asp-validation-for=@item.Quantity class="text-danger"></span>
-                                <input type="submit" value="Update" />
-                            </div>
-                        </form>
-                    </td>
-                    <td>
-                        $@Html.DisplayFor(modelItem => item.Price)
-                    </td>
-                    <td hidden>
-                        @Html.DisplayFor(modelItem => item.TransactionGroup)
-                    </td>
-                    <td hidden>
-                        @Html.DisplayFor(modelItem => item.UserName)
-                    </td>
-                    <td hidden>
-                        @Html.DisplayFor(modelItem => item.Status)
-                    </td>
-                    <td>
-                        @Html.ActionLink("Delete", "DeleteTransaction", item)
-                    </td>
-                </tr>
+                            @*@{
+                                modelItem = item;
+                            }
+                            <button class="delete">Delete</button>
+                            <div class="deleteField">
+
+                            </div>*@
+                            @Html.ActionLink("Delete", "DeleteTransaction", item)
+                        </td>
+
+                    </tr>
+                } else
+                {
+                    <tr>
+                        <td>
+                            @item.Name has been removed.
+                        </td>
+
+                    </tr>
+                }
             }
             <tr>
                 <td>
