@@ -27,7 +27,8 @@ namespace eCommerceMVC.Models
         [StringLength(25)]
         [RegularExpression("[a-zA-Z]+\\s{0,1}[a-zA-Z]*\\.?", ErrorMessage = "It must only contain letters and/or Jr. or Sr.")]
         public string LastName { get; set; }
-        [StringLength(100)]
+        [Required]
+        [StringLength(100, MinimumLength = 7, ErrorMessage = "Your address must be within 7-100 characters.")]
         [RegularExpression("\\d{1,5}\\s[a-zA-Z]+[\\w\\s\\.\\,]*", ErrorMessage = "Your address is not formatted correctly.")]
         public string Address { get; set; }
         [RegularExpression("\\d{10}", ErrorMessage = "It has to be 10 digits.")]

@@ -59,6 +59,7 @@
                                 Products product = new Products();
                                 product.Sku = item.Sku;
                                 product.Name = item.Name;
+                                product.Quantity = item.Quantity;
                             }
                             @Html.ActionLink(item.Name, "ViewProductLanding", "Customer", product)
                         </td>

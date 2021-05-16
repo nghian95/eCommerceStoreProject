@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<eCommerceMVC.Models.Transactions>
-@using Microsoft.AspNetCore.Http; 
-@inject Microsoft.AspNetCore.Http.IHttpContextAccessor httpContextAccessor 
+@using Microsoft.AspNetCore.Http;
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor httpContextAccessor
 
 @{
     ViewData["Title"] = "Checkout";
@@ -16,6 +16,8 @@
             /*edit = true;*/
         })
     </script>
+
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
 
 <h2>Checkout</h2>
@@ -62,6 +64,7 @@
                                     Products product = new Products();
                                     product.Sku = item.Sku;
                                     product.Name = item.Name;
+                                    product.Quantity = item.Quantity;
                                 }
                                 @Html.ActionLink(item.Name, "ViewProductLanding", "Customer", product)
                             </td>
@@ -109,7 +112,7 @@
                     <tr>
 
                         <td>
-                            
+
                             @address
                         </td>
 
@@ -119,7 +122,8 @@
                             @if (address != "No address found")
                             {
                                 <button id="edit">Edit Address</button>
-                            } else
+                            }
+                            else
                             {
                                 <button id="edit">Add Address</button>
                             }

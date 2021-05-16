@@ -235,38 +235,49 @@ namespace eCommerceMVC.Controllers
             return View(mvcCategories);
         }
 
-        public IActionResult AddToCart(Models.Products product, IFormCollection frm)
+        public IActionResult AddToCart(Models.Products product/*, IFormCollection frm*/)
         {
             if (Request.Cookies["Access"] != "0")
             {
                 return RedirectToAction("Login", "Home");
             }
-            Transactions transaction = new Transactions();
-            transaction.Sku = product.Sku;
-            transaction.UserName = Request.Cookies["UserName"];
-            transaction.Status = 1;
-            transaction.Quantity = Convert.ToInt32(frm["amount"]);
-            double notNullSale = product.Sale ?? 0;
-            double notNullPrice = (double) (product.Price ?? 0);
-            transaction.Price = (decimal?)(notNullPrice - (notNullPrice * notNullSale / 100)) ;
-            transaction.Name = product.Name;
-            Users user = _repository.FindUser(Request.Cookies["UserName"]).Item1;
-            if (user.Address != null)
+            //int quantity = Convert.ToInt32(frm["amount"]);
+            int quantity = (int)product.Quantity;
+            if (quantity != 0)
             {
-                transaction.ShippingAddress = user.Address;
-            }
-            _repository.AddTransaction(transaction);
-            var tuple = _repository.RetrieveTransactions(1, transaction.UserName);
-            List<Transactions> transactions = tuple.Item1;
-            ViewBag.Message = tuple.Item2;
-            Models.Transactions modelTransaction = new Models.Transactions();
-            List<Models.Transactions> modelTransactions = new List<Models.Transactions>();
-            foreach (var model in transactions)
+                Transactions transaction = new Transactions();
+                transaction.Sku = product.Sku;
+                transaction.UserName = Request.Cookies["UserName"];
+                transaction.Status = 1;
+                transaction.Quantity = quantity;
+                double notNullSale = product.Sale ?? 0;
+                double notNullPrice = (double)(product.Price ?? 0);
+                transaction.Price = (decimal?)(notNullPrice - (notNullPrice * notNullSale / 100));
+                transaction.Name = product.Name;
+                Users user = _repository.FindUser(Request.Cookies["UserName"]).Item1;
+                if (user.Address != null)
+                {
+                    transaction.ShippingAddress = user.Address;
+                }
+                _repository.AddTransaction(transaction);
+                return RedirectToAction("ViewCart");
+            } else
             {
-                modelTransaction = _mapper.Map<Models.Transactions>(transaction);
-                modelTransactions.Add(modelTransaction);
+                TempData["ZeroQuantity"] = true;
+                return RedirectToAction("ViewProductLanding");
             }
-            return RedirectToAction("ViewCart") ; // could also just make it redirect to view cart
+            
+            //var tuple = _repository.RetrieveTransactions(1, transaction.UserName);
+            //List<Transactions> transactions = tuple.Item1;
+            //ViewBag.Message = tuple.Item2;
+            //Models.Transactions modelTransaction = new Models.Transactions();
+            //List<Models.Transactions> modelTransactions = new List<Models.Transactions>();
+            //foreach (var model in transactions)
+            //{
+            //    modelTransaction = _mapper.Map<Models.Transactions>(transaction);
+            //    modelTransactions.Add(modelTransaction);
+            //}
+
         }
 
         public IActionResult SaveEditedQuantity(Models.Transactions transaction, IFormCollection frm)
@@ -327,7 +338,7 @@ namespace eCommerceMVC.Controllers
             {
                 return RedirectToAction("Login", "Home");
             }
-            string shippingAddress = frm["ShippingAddress"];
+            string shippingAddress = frm["Address"];
             eCommerceClassLibrary.Models.Users user = _repository.FindUser(Request.Cookies["UserName"]).Item1;
             if (user.Address == null)
             {

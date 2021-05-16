@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace eCommerceMVC.Models
 {
@@ -13,6 +14,8 @@ namespace eCommerceMVC.Models
         public string UserName { get; set; }
         public int? Status { get; set; }
         public string Name { get; set; }
+        [StringLength(100)]
+        [RegularExpression("\\d{1,5}\\s[a-zA-Z]+[\\w\\s\\.\\,]*", ErrorMessage = "Your address is not formatted correctly.")]
         public string ShippingAddress { get; set; }
 
         public Products SkuNavigation { get; set; }

@@ -6,18 +6,15 @@
 
 *FINISHED*
 
+
 *IMPORTANT*
     - Copy changes from Customer Pages to other Views as well
 
     - Explore dropdown menus (i.e. for CategoryId when adding product)
         - Dropdown menu for customer to see all their options (Account into AccountInfo, OrderHistory)
-    - Set up Data Annotations for min/max string length, type, etc. for models
-        - Have proper validations for email, address, etc. (right # of characters, type of characters, etc)
-    - Should not be able to add 0 quantity for a product.
-    - Should not be able to edit address to a blank state.
     - Promo codes
     - Order History should be restructured to separate the different purchases more clearly and show the subtotal.
-    - Customer checkout makes it not have the customer layout signed in.
+
     - Upload images for products
     - Admin page of Product Landing should have rearrange images, delete product, duplicate product.
     - Make it look nice
@@ -48,7 +45,8 @@
     - Add plugin for tracking 
 
 **#DOUBLECHECK#**
-
+    - Customer checkout makes it not have the customer layout signed in.
+        - Not able to replicate
 
 **#IDEAS#**
 
