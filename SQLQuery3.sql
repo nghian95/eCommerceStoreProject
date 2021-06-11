@@ -21,7 +21,8 @@ CREATE TABLE Transactions
 )
 
 ALTER TABLE Transactions 
-    ADD ShippingAddress VARCHAR(100) NOT NULL DEFAULT '';
+    ADD TransactionGroup INT 
+    --ADD ShippingAddress VARCHAR(100) NOT NULL DEFAULT '';
     --ADD FOREIGN KEY (Name) REFERENCES Products(Name);
 
 --ALTER TABLE Transactions
@@ -48,3 +49,5 @@ SELECT * FROM Transactions
 
 EXEC sp_RENAME 'dbo.Transactions.TotalPrice', 'Price', 'COLUMN'
 GO
+
+

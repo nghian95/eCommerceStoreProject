@@ -574,7 +574,7 @@ namespace eCommerceClassLibrary
                 //transaction.TransactionGroup = ++max;
                 if (transaction.Status == 1)
                 {
-                    Transactions transac = _context.Transactions.Where(x => x.Sku == transaction.Sku && x.Status == 1).FirstOrDefault();
+                    Transactions transac = _context.Transactions.Where(x => x.Sku == transaction.Sku && x.Status == 1 && x.UserName == transaction.UserName).FirstOrDefault();
                     if (transac != null)
                     {
                         if (transac.Quantity != null)

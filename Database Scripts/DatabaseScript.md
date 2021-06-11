@@ -1,3 +1,7 @@
+CREATE DATABASE eCommerceDB
+
+USE eCommerceDB
+
 CREATE TABLE [dbo].[Categories] (
     [CategoryID] INT          IDENTITY (1, 1) NOT NULL,
     [Name]       VARCHAR (30) NOT NULL,

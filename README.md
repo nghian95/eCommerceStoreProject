@@ -5,6 +5,7 @@
 **#TO DO#**
 
 *FINISHED*
+    - Update database to properly fit the models in the project.
 
 
 *IMPORTANT*
@@ -67,3 +68,12 @@
                        -1 = Return/Refund
     
     TransactionGroup is for Purchases that have multiple items.
+
+**#RESTORING DATABASE**
+    In SSMS SQL:
+    
+        CREATE DATABASE eCommerceDB
+
+        USE eCommerceDB
+
+    Right click eCommerceDB > Tasks > Restore > Add eCommerceDB.bak > Click Options and check Overwrite the Existing Database (With replace) > Select Close existing connections to destination database
